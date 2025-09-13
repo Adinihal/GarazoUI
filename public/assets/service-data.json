@@ -1,0 +1,58 @@
+{
+  "services": [
+    {
+      "underServicing": 5,
+      "nextDayDelivery": 2,
+      "upcomingDelivery": 3,
+      "readyForDelivery": 4,
+      "paymentProcessing": 1,
+      "completedService": 6,
+      "vehicle": "Honda Shine",
+      "location": "Bangalore",
+      "customer": {
+        "name": "Rahul Sharma",
+        "phone": "9876543210",
+        "rating": 4.5,
+        "advisor": "Amit",
+        "source": "Walk-in"
+      },
+      "jcNo": "JC1234",
+      "estimate": 3500,
+      "invoiceNo": "INV5678",
+      "paid": 2000,
+      "due": 1500,
+      "doa": "2025-08-01",
+      "dod": "2025-08-05",
+      "progress": 60,
+      "kms": 12000,
+      "type": "Free"
+    },
+    {
+      "underServicing": 2,
+      "nextDayDelivery": 1,
+      "upcomingDelivery": 2,
+      "readyForDelivery": 3,
+      "paymentProcessing": 0,
+      "completedService": 8,
+      "vehicle": "Bajaj Pulsar",
+      "location": "Mumbai",
+      "customer": {
+        "name": "Sneha Rao",
+        "phone": "9123456780",
+        "rating": 5,
+        "advisor": "Rakesh",
+        "source": "Online"
+      },
+      "jcNo": "JC5678",
+      "estimate": 4200,
+      "invoiceNo": "INV8765",
+      "paid": 4200,
+      "due": 0,
+      "doa": "2025-08-02",
+      "dod": "2025-08-06",
+      "progress": 100,
+      "kms": 22000,
+      "type": "Paid"
+    }
+  ]
+}
