@@ -3,7 +3,7 @@
 import React from 'react';
 import { FaStar, FaPhone, FaEnvelope, FaMapMarkerAlt, FaMotorcycle, FaTools, FaCalendarAlt, FaRupeeSign } from 'react-icons/fa';
 
-interface ServiceCardProps {
+interface ServiceCardProps{
   service: {
     id: string;
     status: string;
