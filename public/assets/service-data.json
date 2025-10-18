@@ -1,0 +1,191 @@
+{
+  "services": [
+    {
+      "id": "SRV001",
+      "status": "underServicing",
+      "vehicle": {
+        "model": "Honda Shine",
+        "regNo": "KA01MX1234",
+        "type": "Bike",
+        "kms": 12000
+      },
+      "location": "Bangalore Central",
+      "customer": {
+        "name": "Rahul Sharma",
+        "phone": "9876543210",
+        "email": "rahul.s@email.com",
+        "rating": 4.5,
+        "advisor": "Amit Kumar",
+        "source": "Walk-in",
+        "address": "123, 1st Cross, MG Road, Bangalore"
+      },
+      "serviceDetails": {
+        "jcNo": "JC1234",
+        "estimate": 3500,
+        "invoiceNo": "INV5678",
+        "paid": 2000,
+        "due": 1500,
+        "type": "Free Service",
+        "doa": "2025-08-01",
+        "dod": "2025-08-05",
+        "progress": 60,
+        "assignedTechnician": "Suresh Patil",
+        "supervisor": "Deepak Verma"
+      }
+    },
+    {
+      "id": "SRV002",
+      "status": "readyForDelivery",
+      "vehicle": {
+        "model": "TVS Apache RTR 160",
+        "regNo": "KA02AB5678",
+        "type": "Bike",
+        "kms": 8500
+      },
+      "location": "Bangalore East",
+      "customer": {
+        "name": "Priya Patel",
+        "phone": "9876543211",
+        "email": "priya.p@email.com",
+        "rating": 5.0,
+        "advisor": "Sneha Singh",
+        "source": "Online Booking",
+        "address": "456, 2nd Main, HSR Layout, Bangalore"
+      },
+      "serviceDetails": {
+        "jcNo": "JC1235",
+        "estimate": 4500,
+        "invoiceNo": "INV5679",
+        "paid": 4500,
+        "due": 0,
+        "type": "Paid Service",
+        "doa": "2025-08-02",
+        "dod": "2025-08-04",
+        "progress": 100,
+        "assignedTechnician": "Ramesh Kumar",
+        "supervisor": "Deepak Verma"
+      }
+    },
+    {
+      "id": "SRV003",
+      "status": "paymentProcessing",
+      "vehicle": {
+        "model": "Hero Splendor Plus",
+        "regNo": "KA03CD9012",
+        "type": "Bike",
+        "kms": 15000
+      },
+      "location": "Bangalore North",
+      "customer": {
+        "name": "Mohammed Ali",
+        "phone": "9876543212",
+        "email": "ali.m@email.com",
+        "rating": 4.0,
+        "advisor": "Rajesh Kumar",
+        "source": "Corporate",
+        "address": "789, 3rd Block, RT Nagar, Bangalore"
+      },
+      "serviceDetails": {
+        "jcNo": "JC1236",
+        "estimate": 2800,
+        "invoiceNo": "INV5680",
+        "paid": 1000,
+        "due": 1800,
+        "type": "Repair",
+        "doa": "2025-08-03",
+        "dod": "2025-08-06",
+        "progress": 90,
+        "assignedTechnician": "Suresh Patil",
+        "supervisor": "Deepak Verma"
+      }
+    },
+    {
+      "id": "SRV004",
+      "status": "nextDayDelivery",
+      "vehicle": {
+        "model": "Bajaj Pulsar NS160",
+        "regNo": "KA04EF3456",
+        "type": "Bike",
+        "kms": 5000
+      },
+      "location": "Bangalore South",
+      "customer": {
+        "name": "Sarah Wilson",
+        "phone": "9876543213",
+        "email": "sarah.w@email.com",
+        "rating": 4.8,
+        "advisor": "Amit Kumar",
+        "source": "Pick & Drop",
+        "address": "101, 4th Phase, JP Nagar, Bangalore"
+      },
+      "serviceDetails": {
+        "jcNo": "JC1237",
+        "estimate": 3000,
+        "invoiceNo": "INV5681",
+        "paid": 3000,
+        "due": 0,
+        "type": "First Free Service",
+        "doa": "2025-08-03",
+        "dod": "2025-08-05",
+        "progress": 85,
+        "assignedTechnician": "Ramesh Kumar",
+        "supervisor": "Deepak Verma"
+      }
+    },
+    {
+      "id": "SRV005",
+      "status": "upcomingDelivery",
+      "vehicle": {
+        "model": "Honda Activa 6G",
+        "regNo": "KA05GH7890",
+        "type": "Scooty",
+        "kms": 3000
+      },
+      "location": "Bangalore West",
+      "customer": {
+        "name": "Anita Desai",
+        "phone": "9876543214",
+        "email": "anita.d@email.com",
+        "rating": 4.2,
+        "advisor": "Sneha Singh",
+        "source": "Walk-in",
+        "address": "202, 5th Cross, Rajajinagar, Bangalore"
+      },
+      "serviceDetails": {
+        "jcNo": "JC1238",
+        "estimate": 1500,
+        "invoiceNo": "INV5682",
+        "paid": 1500,
+        "due": 0,
+        "type": "General Service",
+        "doa": "2025-08-04",
+        "dod": "2025-08-06",
+        "progress": 75,
+        "assignedTechnician": "Suresh Patil",
+        "supervisor": "Deepak Verma"
+      }
+    }
+  ],
+  "statusCounts": {
+    "underServicing": 5,
+    "nextDayDelivery": 2,
+    "upcomingDelivery": 3,
+    "readyForDelivery": 4,
+    "paymentProcessing": 1,
+    "completedService": 6
+  },
+  "serviceTypes": [
+    "Free Service",
+    "Paid Service",
+    "Repair",
+    "General Service",
+    "First Free Service"
+  ],
+  "locations": [
+    "Bangalore Central",
+    "Bangalore East",
+    "Bangalore North",
+    "Bangalore South",
+    "Bangalore West"
+  ]
+}

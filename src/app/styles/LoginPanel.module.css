@@ -1,0 +1,304 @@
+.container {
+    display: flex;
+    height: 100vh;
+    /* font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; */
+    font-family: 'Open Sans', sans-serif;
+    background-image: url("/assets/LoginpageBg.jpg");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-attachment: fixed;
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    flex-direction: column;
+    background-color: #16cba7;
+  }
+  
+  /* Left Panel Styles */
+  .leftPanel {
+    width: 50%;
+    background-color: #f5f5f5;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  .logoContainer {
+    margin-bottom: 40px;
+  }
+  
+  .logo {
+    width: 120px;
+    height: auto;
+  }
+  
+  .illustrationContainer {
+ 
+    display: flex;
+    padding-top: 155px;
+    padding-left: 185px;
+  }
+  
+  .illustration {
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+  }
+  
+  .supportSection {
+    margin-top: auto;
+    padding-left: 34px;
+    /* display: flex; */
+ 
+
+
+  }
+  
+  .supportSectionData{
+        display: flex;
+         margin-top: auto;
+
+  }
+  .supportTitle {
+    font-size: 1.2rem;
+    color: #333;
+    margin-bottom: 10px;
+  }
+  
+  .supportText {
+    font-size: 0.9rem;
+    color: #555;
+    margin: 5px 0;
+    line-height: 1.4;
+  }
+  
+  .copyright {
+    font-size: 0.8rem;
+    color: #777;
+    margin-top: 15px;
+  }
+  
+  .appButtons {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+    padding-left: 650px;
+  }
+  
+  .appButton {
+    height: 40px;
+    width: auto;
+    cursor: pointer;
+  }
+  
+  .submitButton {
+    width: 100%;
+    padding: 12px;
+    background-color: #16cba7;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background-color 0.3s ease;
+  }
+
+  .submitButton:hover {
+    background-color: #14b696;
+  }
+
+  .submitButton:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+
+  .errorMessage {
+    color: #dc2626;
+    background-color: #fee2e2;
+    border: 1px solid #fca5a5;
+    padding: 10px;
+    border-radius: 4px;
+    margin-top: 10px;
+    text-align: center;
+  }
+
+  .successMessage {
+    color: #059669;
+    background-color: #d1fae5;
+    border: 1px solid #6ee7b7;
+    padding: 10px;
+    border-radius: 4px;
+    margin-top: 10px;
+    text-align: center;
+  }
+
+.loginform_background {
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 400px;
+  position: relative;
+  z-index: 1;
+}
+
+.loginForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.inputLabel {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+}
+
+.inputField {
+  padding: 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+  font-size: 1rem;
+  transition: border-color 0.2s ease;
+}
+
+.inputField:focus {
+  outline: none;
+  border-color: #16cba7;
+  box-shadow: 0 0 0 2px rgba(22, 203, 167, 0.2);
+}
+
+.forgotLink {
+  font-size: 0.875rem;
+  color: #16cba7;
+  text-decoration: none;
+  align-self: flex-end;
+  margin-top: -1rem;
+}
+
+/* Right Panel Styles */
+.rightPanel {
+  border: 1px solid green;
+    width: 50%;
+    margin-right: 90px;
+    background-color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+  }
+  
+  .formContainer {
+    width: 100%;
+    max-width: 400px;
+  }
+  
+  .welcomeSection {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  
+  .welcomeTitle {
+    font-size: 1.8rem;
+    color: #333;
+    margin-bottom: 5px;
+  }
+  
+  .appTitle {
+    font-size: 1.4rem;
+    color: #555;
+    font-weight: 500;
+  }
+  
+  .loginPrompt {
+    text-align: center;
+    color: #666;
+    margin-bottom: 25px;
+    font-size: 0.95rem;
+  }
+  
+  .loginForm {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .inputGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .inputLabel {
+    font-size: 0.9rem;
+    color: #555;
+    font-weight: 500;
+  }
+  
+  .inputField {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+    width: 100%;
+  }
+  
+  .inputField:focus {
+    outline: none;
+    border-color: #0070f3;
+  }
+  
+  .forgotLink {
+    text-align: right;
+    color: #0070f3;
+    font-size: 0.9rem;
+    text-decoration: none;
+    margin-top: -10px;
+  }
+  
+  .submitButton {
+    padding: 12px;
+    background-color: #0066cc;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    margin-top: 10px;
+  }
+  
+  .submitButton:hover {
+    background-color: #0052a3;
+  }
+  
+  .successMessage {
+    color: #28a745;
+    font-weight: 500;
+    text-align: center;
+    margin-top: 20px;
+    display: none; /* Hidden by default */
+  }
+
+  .loginform_background {
+    
+    background-color: transparent;
+    padding: 15px 25px 15px 25px;
+    border: 1px solid #16cba7;
+    border-radius: 15px;
+    color: #000;
+    box-shadow: 0px 10px 13px -7px #909090, 5px 5px 15px 5px rgba(0, 0, 0, 0);
+}

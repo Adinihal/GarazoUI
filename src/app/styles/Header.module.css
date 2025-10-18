@@ -1,0 +1,122 @@
+/* styles/Header.module.css */
+.headerWrapper {
+  width: 100%;
+  background-color: #f6f6f6;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* Top dark bar */
+.topBar {
+  background-color: #2f2c2c;
+  display: flex;
+  justify-content: flex-end;
+  padding: 8px 16px;
+  color: white;
+  font-size: 14px;
+}
+
+.rightIcons {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.icon {
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* Main white header */
+.header {
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 20px 0 20px;
+  border-bottom: 1px dotted #ccc;
+  border-radius: 0 0 10px 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.leftMenu {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logoBox {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  height: 40px;
+}
+
+.title {
+  font-weight: bold;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.broContainer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.broLabel {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.stars {
+  display: flex;
+  gap: 2px;
+}
+
+.star {
+  color: #111;
+  font-size: 14px;
+}
+
+.settings {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* Bottom navigation bar */
+.menuBar {
+  display: flex;
+  justify-content: center;
+  background-color: #f6f6f6;
+  padding: 10px 0;
+  gap: 20px;
+}
+
+.menuItem {
+  cursor: pointer;
+  padding: 8px 16px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+
+.menuItem:hover {
+  background-color: #e0e0e0;
+}
+
+.menuItem {
+  font-size: 12px;
+  font-weight: bold;
+  font-style: italic;
+  background-color: #e4e4e4;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
