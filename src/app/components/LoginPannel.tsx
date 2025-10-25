@@ -7,7 +7,7 @@ interface LoginResponse {
   refreshToken: string;
   expiresIn: number;
   user: {
-    id: number;
+    id: string;
     username: string;
     email: string;
     firstName: string;
@@ -35,33 +35,56 @@ export default function LoginPanel() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({
+          Username: username,
+          Password: password
+        }),
       });
+      
+      const data = await response.json();
       
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Invalid username or password');
+        throw new Error(data.message || 'Invalid username or password');
       }
       
-      const data: LoginResponse = await response.json();
-      
-      // Handle successful login
-      setSuccess(true);
+      // Type check the response
+      const loginResponse = data as LoginResponse;
       
       // Store auth data
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('refreshToken', data.refreshToken);
-      localStorage.setItem('tokenExpiry', (Date.now() + (data.expiresIn * 1000)).toString());
-      localStorage.setItem('user', JSON.stringify(data.user));
+      localStorage.setItem('token', loginResponse.token);
+      localStorage.setItem('refreshToken', loginResponse.refreshToken);
+      localStorage.setItem('tokenExpiry', (Date.now() + (loginResponse.expiresIn * 1000)).toString());
+      
+      // Store user data
+      const userData = {
+        id: loginResponse.user.id,
+        username: loginResponse.user.username,
+        email: loginResponse.user.email,
+        firstName: loginResponse.user.firstName,
+        lastName: loginResponse.user.lastName,
+        roles: loginResponse.user.roles,
+      };
+      localStorage.setItem('user', JSON.stringify(userData));
+      
+      // Store role for easy access
+      localStorage.setItem('userRole', loginResponse.user.roles[0]);
+      
+      setSuccess(true);
       
       console.log('Login successful:', {
-        username: data.user.username,
-        roles: data.user.roles,
-        expiresIn: data.expiresIn
+        username: loginResponse.user.username,
+        email: loginResponse.user.email,
+        roles: loginResponse.user.roles,
+        expiresIn: loginResponse.expiresIn
       });
       
-      // Redirect to the dashboard screen
-      window.location.href = '/dashboard';
+      // Redirect based on role
+      const role = loginResponse.user.roles[0];
+      if (role === 'Admin') {
+        window.location.href = '/dashboard';
+      } else {
+        window.location.href = '/dashboard'; // You can modify this for different role redirects
+      }
       
     } catch (err) {
       if (err instanceof Error) {

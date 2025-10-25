@@ -51,7 +51,11 @@ interface Personnel {
   address: string;
 }
 
-export default function CustomerRegistrationForm() {
+interface CustomerRegistrationFormProps {
+  onCloseRegistrationModal: () => void;
+}
+
+export default function CustomerRegistrationForm({onCloseRegistrationModal}: CustomerRegistrationFormProps) {
   const router = useRouter();
   const [showAddVehicleModal, setShowAddVehicleModal] = useState(false);
   const [showAddTechnicianModal, setShowAddTechnicianModal] = useState(false);
@@ -94,6 +98,7 @@ export default function CustomerRegistrationForm() {
   const [form, setForm] = useState<FormData>(initial);
   const [errors, setErrors] = useState<FormErrors>({});
   const [isLoading, setIsLoading] = useState(false);
+  const [showRegistrationModal, setShowRegistrationModal] = useState(false);
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) {
     const { name, value } = e.target;
@@ -194,7 +199,8 @@ export default function CustomerRegistrationForm() {
 
   function handleClose() {
     // go back or close modal — in a modal you would call the modal close handler
-    if (router && router.back) router.back();
+    setForm(initial);
+    setErrors({});
   }
 
   return (
@@ -384,7 +390,7 @@ export default function CustomerRegistrationForm() {
           </button>
           <button
             type="button"
-            onClick={handleClose}
+            onClick={onCloseRegistrationModal}
             disabled={isLoading}
             className={`flex-1 py-3 rounded-2xl bg-red-50 border border-red-300 text-red-800 shadow-sm transition-all
               ${isLoading ? 'opacity-50 cursor-not-allowed' : 'hover:bg-red-100'}`}

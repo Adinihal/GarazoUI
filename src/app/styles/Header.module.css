@@ -10,9 +10,9 @@
   background-color: #2f2c2c;
   display: flex;
   justify-content: flex-end;
-  padding: 8px 16px;
+  padding: 16px;
   color: white;
-  font-size: 14px;
+  font-size: 15px;
 }
 
 .rightIcons {

@@ -87,17 +87,75 @@ export default function Home() {
 
   useEffect(() => {
     isMounted.current = true;
-    // Only fetch data if we're mounted
     if (isMounted.current) {
-      axios.get('/assets/service-data.json')
+      axios.get('http://localhost:5201/api/Dashboard')
         .then(response => {
           if (isMounted.current) {
-            setData(response.data);
+            // Transform API response to ServiceData structure
+            const apiData = response.data;
+            // Map jobStatus to dashboard status counts
+            const statusMap = {
+              'Under Service': 'underServicing',
+              'Next Day Delivery': 'nextDayDelivery',
+              'Upcoming': 'upcomingDelivery',
+              'Ready': 'readyForDelivery',
+              'Payment': 'paymentProcessing',
+              'Completed': 'completedService',
+              'Open': 'underServicing',
+              'In Progress': 'underServicing',
+            };
+            const statusCounts = {
+              underServicing: 0,
+              nextDayDelivery: 0,
+              upcomingDelivery: 0,
+              readyForDelivery: 0,
+              paymentProcessing: 0,
+              completedService: 0,
+            };
+            // Count statuses
+            apiData.forEach((item: any) => {
+              const mapped = statusMap[item.jobStatus] || 'underServicing';
+              if (statusCounts[mapped] !== undefined) statusCounts[mapped]++;
+            });
+            // Map API data to Service[]
+            const services = apiData.map((item: any) => ({
+              id: String(item.jobCardNo),
+              status: item.jobStatus,
+              vehicle: {
+                model: item.vehicleName || '',
+                regNo: item.vehicleRegNo || '',
+                type: item.vehicleCategory || '',
+                kms: item.kmDriven || 0,
+              },
+              location: item.customerAddress || '',
+              customer: {
+                name: item.customerName || '',
+                phone: item.phoneNumber || '',
+                email: item.customerEmail || '',
+                rating: 0,
+                advisor: item.sourceContactPerson || '',
+                source: item.customerSource || '',
+                address: item.customerAddress || '',
+              },
+              serviceDetails: {
+                jcNo: String(item.jobCardNo),
+                estimate: item.invoiceTotal || 0,
+                invoiceNo: item.invoiceId ? String(item.invoiceId) : '',
+                paid: item.netAmount || 0,
+                due: (item.invoiceTotal || 0) - (item.netAmount || 0),
+                type: item.vehicleCategory || '',
+                doa: item.dateOfArrival || '',
+                dod: item.dateOfDelivery || '',
+                progress: 0,
+                assignedTechnician: [item.technicianFirstName, item.technicianLastName].filter(Boolean).join(' '),
+                supervisor: [item.supervisorFirstName, item.supervisorLastName].filter(Boolean).join(' '),
+              },
+            }));
+            setData({ services, statusCounts });
           }
         })
         .catch(err => console.error(err));
     }
-    
     return () => {
       isMounted.current = false;
     };
