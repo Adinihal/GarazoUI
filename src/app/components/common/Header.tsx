@@ -21,6 +21,7 @@ const Header = (onCloseRegistrationModal: HeaderProps) => {
   const handleCloseModal = () => {
     setShowRegistrationModal(false);
   };
+  
 
   const logOut = () => {
     // Remove auth data in logout
