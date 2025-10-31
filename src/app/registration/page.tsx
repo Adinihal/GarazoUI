@@ -1,16 +1,17 @@
 'use client';
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { Readable } from 'stream';
 import { useRouter } from "next/navigation";
 import { FaPlus } from 'react-icons/fa';
 import AddVehicleModal from '../components/AddVehicleModal';
 import AddPersonnelModal from '../components/AddPersonnelModal';
+import {useSelector} from "react-redux";
+// import { RootState } from '../store/store';
 
 interface Vehicle {
-  id: string;
-  brand: string;
-  model: string;
-  variant?: string;
+  vehicleId: string;
+  vehicleName: string;
 }
 
 interface FormData {
@@ -61,20 +62,13 @@ export default function CustomerRegistrationForm({onCloseRegistrationModal}: Cus
   const [showAddTechnicianModal, setShowAddTechnicianModal] = useState(false);
   const [showAddSupervisorModal, setShowAddSupervisorModal] = useState(false);
   
-  const [vehicles, setVehicles] = useState<Vehicle[]>([
-    { id: '1', brand: 'Honda', model: 'Activa', variant: '6G' },
-    { id: '2', brand: 'Hero', model: 'Splendor', variant: 'Plus' },
-    { id: '3', brand: 'TVS', model: 'Apache', variant: 'RTR 160' },
-  ]);
+  // const [vehicles, setVehicles] = useState<Vehicle[]>([]);
+  const vehicles = useSelector((state: any) => state.dashboard.vehicleList);
+  const vehicleCategories = useSelector((state: any) => state.dashboard.vehicleCategories);
+  const customerSources = useSelector((state: any) => state.dashboard.customerSources);
+  const technicians = useSelector((state: any) => state.dashboard.mechanicList);
+  const supervisors = useSelector((state: any) => state.dashboard.mechanicList);
 
-  const [technicians, setTechnicians] = useState<Personnel[]>([
-    { id: '1', firstName: 'Suresh', lastName: 'Patil', username: 'suresh.patil', emailId: 'suresh@example.com', contactNumber: '9876543210', password: '', passwordExpiryDate: '', designation: 'Technician', dateOfBirth: '', dateOfAnniversary: '', address: '' },
-    { id: '2', firstName: 'Ramesh', lastName: 'Kumar', username: 'ramesh.kumar', emailId: 'ramesh@example.com', contactNumber: '9876543211', password: '', passwordExpiryDate: '', designation: 'Technician', dateOfBirth: '', dateOfAnniversary: '', address: '' },
-  ]);
-
-  const [supervisors, setSupervisors] = useState<Personnel[]>([
-    { id: '1', firstName: 'Deepak', lastName: 'Verma', username: 'deepak.verma', emailId: 'deepak@example.com', contactNumber: '9876543212', password: '', passwordExpiryDate: '', designation: 'Supervisor', dateOfBirth: '', dateOfAnniversary: '', address: '' },
-  ]);
 
   const initial: FormData = {
     vehicleNo: "",
@@ -202,7 +196,6 @@ export default function CustomerRegistrationForm({onCloseRegistrationModal}: Cus
     setForm(initial);
     setErrors({});
   }
-
   return (
     <div className="max-w-7xl mx-auto p-6">
       <form onSubmit={handleSubmit} className="bg-white shadow-md rounded-lg p-6">
@@ -216,9 +209,11 @@ export default function CustomerRegistrationForm({onCloseRegistrationModal}: Cus
             <label className="block text-sm font-medium text-gray-700 mt-4">Customer Source</label>
             <select name="customerSource" value={form.customerSource} onChange={handleChange} className="mt-1 block w-full rounded-lg border px-3 py-2 shadow-sm border-gray-200">
               <option value="">Select customer source</option>
-              <option value="pick_and_drop">Pick & Drop</option>
-              <option value="walkin">Walkin</option>
-              <option value="company">Corporate</option>
+              {customerSources.map((source:any, index:any) => (
+                <option key={index} value={`${source.sourceId}`}>
+                  {source.companyName}
+                </option>
+              ))}
             </select>
 
             <label className="block text-sm font-medium text-gray-700 mt-4">Chassis Number / VIN</label>
@@ -247,9 +242,9 @@ export default function CustomerRegistrationForm({onCloseRegistrationModal}: Cus
               }`}
             >
               <option value="">Select vehicle</option>
-              {vehicles.map((vehicle) => (
-                <option key={vehicle.id} value={`${vehicle.brand} ${vehicle.model} ${vehicle.variant || ''}`}>
-                  {vehicle.brand} {vehicle.model} {vehicle.variant}
+              {vehicles.map((vehicle:any, index:any) => (
+                <option key={index} value={`${vehicle.vehicleId}`}>
+                  {vehicle.vehicleName}
                 </option>
               ))}
             </select>
@@ -262,14 +257,16 @@ export default function CustomerRegistrationForm({onCloseRegistrationModal}: Cus
             <input name="engineNumber" value={form.engineNumber} onChange={handleChange} placeholder="Engine Number" className="mt-1 block w-full rounded-lg border px-3 py-2 shadow-sm border-gray-200" />
           </div>
 
-          {/* Column 3 */}
+          {/* Column 3 vehicleCategories */}
           <div>
             <label className="block text-sm font-medium text-gray-700">Vehicle Category <span className="text-red-500">*</span></label>
             <select name="vehicleCategory" value={form.vehicleCategory} onChange={handleChange} className={`mt-1 block w-full rounded-lg border px-3 py-2 shadow-sm ${errors.vehicleCategory ? 'border-red-400' : 'border-gray-200'}`}>
               <option value="">Select vehicle category</option>
-              <option value="bike">Bike</option>
-              <option value="scooty">Scooty</option>
-              <option value="car">Car</option>
+              {vehicleCategories.map((category:any, index:any) => (
+                <option key={index} value={`${category.id}`}>
+                  {category.categoryName}
+                </option>
+              ))}
             </select>
             {errors.vehicleCategory && <p className="text-xs text-red-500 mt-1">{errors.vehicleCategory}</p>}
 

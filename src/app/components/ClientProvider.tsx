@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import ReduxProvider from '../reduxProvider';
 
 interface ClientProviderProps {
   children: React.ReactNode;
@@ -18,5 +19,9 @@ export default function ClientProvider({ children }: ClientProviderProps) {
     return <div style={{ visibility: 'hidden' }}>{children}</div>;
   }
 
-  return <>{children}</>;
+  return(
+            <ReduxProvider>
+                {children}
+            </ReduxProvider>
+  );         
 }

@@ -6,14 +6,8 @@ import { FaHome, FaStar, FaCog, FaBars, FaClock, FaTimes, FaSignOutAlt, FaPowerO
 import CustomerRegistrationForm from '@/app/registration/page';
 
 
-interface HeaderProps {
-      onCloseRegistrationModal: () => void;
-      // Other props
-}
-
-const Header = (onCloseRegistrationModal: HeaderProps) => {
+const Header = () => {
   const [showRegistrationModal, setShowRegistrationModal] = useState(false);
-
   const handleRegistrationClick = () => {
     setShowRegistrationModal(true);
   };
