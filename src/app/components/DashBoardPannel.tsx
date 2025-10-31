@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import store from '../store/store';
 import styles from '../styles/Dashboard.module.css';
 import { FaTruck, FaMoneyBill, FaCheckCircle, FaWrench, FaCalendarDay, FaClock } from 'react-icons/fa';
 import DetailCard from './DetailCard';
 import StatusCard from './StatusCard';
 import Header from './common/Header';
 import ServiceDetailsModal from './ServiceDetailsModal';
+import {fetchVehicleList, fetchVehicleCategories, fetchCustomerSources, fetchMechanicList} from '../reduxStore/dashboardSlice';
+import {useDispatch} from "react-redux";
 
 interface Customer {
   name: string;
@@ -77,6 +80,7 @@ interface ServiceTableData {
 }
 
 export default function Home() {
+  let dispatch = useDispatch();
   const [data, setData] = useState<ServiceData | null>(null);
   const [showServiceModal, setShowServiceModal] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState<StatusType | ''>('');
@@ -167,6 +171,24 @@ export default function Home() {
       .catch(err => console.error(err));
   }, []);
 
+  useEffect(() => {
+    axios.get('http://localhost:5201/api/Vehicle')
+      .then(response => dispatch(fetchVehicleList(response.data)))
+      .catch(err => console.error(err));
+
+      axios.get('http://localhost:5201/api/VehicleCategory')
+      .then(response => dispatch(fetchVehicleCategories(response.data)))
+      .catch(err => console.error(err));
+
+      axios.get('http://localhost:5201/api/CustomerSource')
+      .then(response => dispatch(fetchCustomerSources(response.data)))
+      .catch(err => console.error(err));
+
+      axios.get('http://localhost:5201/api/Mechanic')
+      .then(response => dispatch(fetchMechanicList(response.data)))
+      .catch(err => console.error(err));
+  }, []);
+
   // Helper function to format dates consistently
   const formatDate = (dateStr: string) => {
     if (!dateStr) return '';
@@ -212,7 +234,7 @@ export default function Home() {
 
   return (
     <>
-      <Header />
+      <Header/>
       <div className={styles.container}>
         <div className={styles.section}>
           <h2 className={styles.sectionTitle}>Service Queue</h2>
