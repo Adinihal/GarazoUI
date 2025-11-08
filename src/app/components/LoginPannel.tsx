@@ -30,7 +30,7 @@ export default function LoginPanel() {
     setSuccess(false);
     
     try {
-      const response = await fetch('http://localhost:5201/api/Auth/login', {
+      const response = await fetch('https://garazo-api-25110123.azurewebsites.net/api/Auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -171,9 +171,9 @@ export default function LoginPanel() {
         <div className={styles.supportSectionData}>
            <div className={styles.supportSection}>
                 <h3 className={styles.supportTitle}>Support</h3>
-                <p className={styles.supportText}>Phone or WhatsApp: +919121223601/02</p>
-                <p className={styles.supportText}>Email: services@shannon.com</p>
-                <p className={styles.copyright}>© 2025 - Shannohi Technologies Private Limited, All Rights Reserved.</p>
+                <p className={styles.supportText}>Phone or WhatsApp: +91-7064543210</p>
+                <p className={styles.supportText}>Email:opdas1993@gmail.com</p>
+                <p className={styles.copyright}>© 2025 -LeOmm Labs, All Rights Reserved.</p>
             </div>
           
             <div className={styles.appButtons}>

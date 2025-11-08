@@ -34,7 +34,7 @@ const Header = () => {
           <FaHourglass className={styles.icon}/>
           {/* <FaBars className={styles.icon} />
           <FaClock className={styles.icon} /> */}
-          <span className={styles.welcome}>Welcome <strong>OM PRAKASH</strong></span>
+          <span className={styles.welcome}>Welcome <strong>Bike_Master</strong></span>
           <FaPowerOff className={styles.icon} onClick={logOut}/>
         </div>
       </div>
@@ -43,7 +43,8 @@ const Header = () => {
         <div className={styles.header}>
           <div className={styles.leftMenu}>
             <div className={styles.logoBox}>
-              <img src="assets/bike_master_logo.jpg" alt="Logo" className={styles.logo} />
+              {/* <img src="assets/bike_master_logo.jpg" alt="Logo" className={styles.logo} /> */}
+              <img src="assets/GarazoOfficialLogo.png" alt="Logo" className={styles.logo} />
             </div>
             <div className={styles.title}><FaHome /> Bike Masters</div>
           </div>

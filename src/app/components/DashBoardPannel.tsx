@@ -92,7 +92,7 @@ export default function Home() {
   useEffect(() => {
     isMounted.current = true;
     if (isMounted.current) {
-      axios.get('http://localhost:5201/api/Dashboard')
+      axios.get('https://garazo-api-25110123.azurewebsites.net/api/Dashboard')
         .then(response => {
           if (isMounted.current) {
             // Transform API response to ServiceData structure
@@ -172,19 +172,19 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    axios.get('http://localhost:5201/api/Vehicle')
+    axios.get('https://garazo-api-25110123.azurewebsites.net/api/Vehicle')
       .then(response => dispatch(fetchVehicleList(response.data)))
       .catch(err => console.error(err));
 
-      axios.get('http://localhost:5201/api/VehicleCategory')
+      axios.get('https://garazo-api-25110123.azurewebsites.net/api/VehicleCategory')
       .then(response => dispatch(fetchVehicleCategories(response.data)))
       .catch(err => console.error(err));
 
-      axios.get('http://localhost:5201/api/CustomerSource')
+      axios.get('https://garazo-api-25110123.azurewebsites.net/api/CustomerSource')
       .then(response => dispatch(fetchCustomerSources(response.data)))
       .catch(err => console.error(err));
 
-      axios.get('http://localhost:5201/api/Mechanic')
+      axios.get('https://garazo-api-25110123.azurewebsites.net/api/Mechanic')
       .then(response => dispatch(fetchMechanicList(response.data)))
       .catch(err => console.error(err));
   }, []);
