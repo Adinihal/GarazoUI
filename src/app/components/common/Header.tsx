@@ -96,6 +96,7 @@ const Header = () => {
         <div className={styles.header}>
           <div className={styles.leftMenu}>
             <div className={styles.logoBox}>
+<<<<<<< HEAD
               <Image
                 src="/assets/GarazoOfficialLogo.png"
                 alt="Logo"
@@ -107,6 +108,13 @@ const Header = () => {
             <div className={styles.title}>
               <FaHome /> Bike Masters
             </div>
+=======
+              <img src="assets/GarazoOfficialLogo.png" alt="Logo" className={styles.logo} />
+            </div>
+            <div className={styles.title}>
+              <FaHome /> Bike Masters
+            </div>
+>>>>>>> cf86e4badb9da8f6783f7e10beeca4eb521812a6
           </div>
 
           <div className={styles.broContainer}>
