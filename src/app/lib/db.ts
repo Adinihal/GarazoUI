@@ -14,4 +14,5 @@ export const pool = mysql.createPool({
   ssl: true, // Required for Azure MySQL
 });
 
+
 export default pool;
