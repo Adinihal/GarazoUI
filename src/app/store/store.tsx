@@ -1,6 +1,4 @@
-import { createSlice, configureStore } from '@reduxjs/toolkit'
-import { applyMiddleware } from 'redux';
-import {thunk} from 'redux-thunk'
+import { configureStore } from '@reduxjs/toolkit'
 
 // Define a simple slice    
 import dashboardSlice from '../reduxStore/dashboardSlice';
@@ -11,7 +9,5 @@ const store = configureStore({
     },
     // middleware(thunk)
 });
-
-type RootState = ReturnType<typeof store.getState>;
 
 export default store;

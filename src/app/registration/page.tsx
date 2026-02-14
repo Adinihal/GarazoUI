@@ -1,18 +1,11 @@
 'use client';
 
-import React, { useState, useEffect } from "react";
-import { Readable } from 'stream';
-import { useRouter } from "next/navigation";
+import React, { useState } from "react";
 import { FaPlus } from 'react-icons/fa';
 import AddVehicleModal from '../components/AddVehicleModal';
 import AddPersonnelModal from '../components/AddPersonnelModal';
 import {useSelector} from "react-redux";
 // import { RootState } from '../store/store';
-
-interface Vehicle {
-  vehicleId: string;
-  vehicleName: string;
-}
 
 interface FormData {
   vehicleNo: string;
@@ -52,21 +45,21 @@ interface Personnel {
   address: string;
 }
 
-interface CustomerRegistrationFormProps {
-  onCloseRegistrationModal: () => void;
-}
-
-export default function CustomerRegistrationForm({onCloseRegistrationModal}: CustomerRegistrationFormProps) {
-  const router = useRouter();
+export default function CustomerRegistrationForm() {
   const [showAddVehicleModal, setShowAddVehicleModal] = useState(false);
   const [showAddTechnicianModal, setShowAddTechnicianModal] = useState(false);
   const [showAddSupervisorModal, setShowAddSupervisorModal] = useState(false);
   
-  // const [vehicles, setVehicles] = useState<Vehicle[]>([]);
+  // const [vehicles,setVehicles] = useState<Vehicle[]>([]);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const vehicles = useSelector((state: any) => state.dashboard.vehicleList);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const vehicleCategories = useSelector((state: any) => state.dashboard.vehicleCategories);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const customerSources = useSelector((state: any) => state.dashboard.customerSources);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const technicians = useSelector((state: any) => state.dashboard.mechanicList);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const supervisors = useSelector((state: any) => state.dashboard.mechanicList);
 
 
@@ -92,7 +85,6 @@ export default function CustomerRegistrationForm({onCloseRegistrationModal}: Cus
   const [form, setForm] = useState<FormData>(initial);
   const [errors, setErrors] = useState<FormErrors>({});
   const [isLoading, setIsLoading] = useState(false);
-  const [showRegistrationModal, setShowRegistrationModal] = useState(false);
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) {
     const { name, value } = e.target;
@@ -191,11 +183,6 @@ export default function CustomerRegistrationForm({onCloseRegistrationModal}: Cus
     setErrors({});
   }
 
-  function handleClose() {
-    // go back or close modal — in a modal you would call the modal close handler
-    setForm(initial);
-    setErrors({});
-  }
   return (
     <div className="max-w-7xl mx-auto p-6">
       <form onSubmit={handleSubmit} className="bg-white shadow-md rounded-lg p-6">
@@ -209,6 +196,7 @@ export default function CustomerRegistrationForm({onCloseRegistrationModal}: Cus
             <label className="block text-sm font-medium text-gray-700 mt-4">Customer Source</label>
             <select name="customerSource" value={form.customerSource} onChange={handleChange} className="mt-1 block w-full rounded-lg border px-3 py-2 shadow-sm border-gray-200">
               <option value="">Select customer source</option>
+              {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
               {customerSources.map((source:any, index:any) => (
                 <option key={index} value={`${source.sourceId}`}>
                   {source.companyName}
@@ -242,6 +230,7 @@ export default function CustomerRegistrationForm({onCloseRegistrationModal}: Cus
               }`}
             >
               <option value="">Select vehicle</option>
+              {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
               {vehicles.map((vehicle:any, index:any) => (
                 <option key={index} value={`${vehicle.vehicleId}`}>
                   {vehicle.vehicleName}
@@ -262,6 +251,7 @@ export default function CustomerRegistrationForm({onCloseRegistrationModal}: Cus
             <label className="block text-sm font-medium text-gray-700">Vehicle Category <span className="text-red-500">*</span></label>
             <select name="vehicleCategory" value={form.vehicleCategory} onChange={handleChange} className={`mt-1 block w-full rounded-lg border px-3 py-2 shadow-sm ${errors.vehicleCategory ? 'border-red-400' : 'border-gray-200'}`}>
               <option value="">Select vehicle category</option>
+              {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
               {vehicleCategories.map((category:any, index:any) => (
                 <option key={index} value={`${category.id}`}>
                   {category.categoryName}
@@ -325,7 +315,8 @@ export default function CustomerRegistrationForm({onCloseRegistrationModal}: Cus
               className="mt-1 block w-full rounded-lg border px-3 py-2 shadow-sm border-gray-200"
             >
               <option value="">Select technician</option>
-              {technicians.map((tech) => (
+              {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+              {technicians.map((tech: any) => (
                 <option key={tech.id} value={tech.id}>
                   {tech.firstName} {tech.lastName}
                 </option>
@@ -350,7 +341,8 @@ export default function CustomerRegistrationForm({onCloseRegistrationModal}: Cus
               className="mt-1 block w-full rounded-lg border px-3 py-2 shadow-sm border-gray-200"
             >
               <option value="">Select supervisor</option>
-              {supervisors.map((sup) => (
+              {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+              {supervisors.map((sup: any) => (
                 <option key={sup.id} value={sup.id}>
                   {sup.firstName} {sup.lastName}
                 </option>
@@ -380,15 +372,6 @@ export default function CustomerRegistrationForm({onCloseRegistrationModal}: Cus
             type="button"
             onClick={handleReset}
             disabled={isLoading}
-            className={`flex-1 py-3 rounded-2xl bg-blue-50 border border-blue-300 text-blue-800 shadow-sm transition-all
-              ${isLoading ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-100'}`}
-          >
-            Reset
-          </button>
-          <button
-            type="button"
-            onClick={onCloseRegistrationModal}
-            disabled={isLoading}
             className={`flex-1 py-3 rounded-2xl bg-red-50 border border-red-300 text-red-800 shadow-sm transition-all
               ${isLoading ? 'opacity-50 cursor-not-allowed' : 'hover:bg-red-100'}`}
           >
@@ -401,14 +384,13 @@ export default function CustomerRegistrationForm({onCloseRegistrationModal}: Cus
         <AddVehicleModal
           onClose={() => setShowAddVehicleModal(false)}
           onSave={(vehicleData) => {
-            const newVehicle: Vehicle = {
-              id: (vehicles.length + 1).toString(),
-              ...vehicleData
+            const newVehicle = {
+              vehicleId: (vehicles.length + 1).toString(),
+              vehicleName: `${vehicleData.brand} ${vehicleData.model} ${vehicleData.variant || ''}`.trim()
             };
-            setVehicles(prev => [...prev, newVehicle]);
             setForm(prev => ({
               ...prev,
-              vehicleName: `${vehicleData.brand} ${vehicleData.model} ${vehicleData.variant || ''}`.trim()
+              vehicleName: newVehicle.vehicleName
             }));
           }}
         />
@@ -423,7 +405,6 @@ export default function CustomerRegistrationForm({onCloseRegistrationModal}: Cus
               ...personnelData,
               id: (technicians.length + 1).toString(),
             };
-            setTechnicians(prev => [...prev, newTechnician]);
             setForm(prev => ({
               ...prev,
               technician: newTechnician.id
@@ -441,7 +422,6 @@ export default function CustomerRegistrationForm({onCloseRegistrationModal}: Cus
               ...personnelData,
               id: (supervisors.length + 1).toString(),
             };
-            setSupervisors(prev => [...prev, newSupervisor]);
             setForm(prev => ({
               ...prev,
               supervisor: newSupervisor.id

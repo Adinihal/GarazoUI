@@ -1,4 +1,4 @@
-import { useState, FormEvent, ChangeEvent } from 'react';
+import { useState, FormEvent } from 'react';
 import styles from '../styles/LoginPanel.module.css';
 import Image from 'next/image';
 
@@ -30,7 +30,7 @@ export default function LoginPanel() {
     setSuccess(false);
     
     try {
-      const response = await fetch('https://garazo-api-25110123.azurewebsites.net/api/Auth/login', {
+      const response = await fetch('https://leommapi-c0gshkekhvbsa4bh.canadacentral-01.azurewebsites.net/api/Auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

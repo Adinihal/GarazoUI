@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { FaTimes, FaPlus } from 'react-icons/fa';
+import { FaTimes } from 'react-icons/fa';
 import styles from '../styles/Modal.module.css';
 
 interface Personnel {

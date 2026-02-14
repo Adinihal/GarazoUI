@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import store from '../store/store';
 import styles from '../styles/Dashboard.module.css';
 import { FaTruck, FaMoneyBill, FaCheckCircle, FaWrench, FaCalendarDay, FaClock } from 'react-icons/fa';
-import DetailCard from './DetailCard';
 import StatusCard from './StatusCard';
 import Header from './common/Header';
 import ServiceDetailsModal from './ServiceDetailsModal';
 import {fetchVehicleList, fetchVehicleCategories, fetchCustomerSources, fetchMechanicList} from '../reduxStore/dashboardSlice';
 import {useDispatch} from "react-redux";
+import JobCard from './ui/Jobcard/JobCard';
 
 interface Customer {
   name: string;
@@ -80,10 +79,9 @@ interface ServiceTableData {
 }
 
 export default function Home() {
-  let dispatch = useDispatch();
+  const dispatch = useDispatch();
   const [data, setData] = useState<ServiceData | null>(null);
   const [showServiceModal, setShowServiceModal] = useState(false);
-  const [selectedStatus, setSelectedStatus] = useState<StatusType | ''>('');
   const [filteredServices, setFilteredServices] = useState<ServiceTableData[]>([]);
   
   // Use a ref to track if the component is mounted
@@ -92,7 +90,7 @@ export default function Home() {
   useEffect(() => {
     isMounted.current = true;
     if (isMounted.current) {
-      axios.get('https://garazo-api-25110123.azurewebsites.net/api/Dashboard')
+      axios.get('https://leommapi-c0gshkekhvbsa4bh.canadacentral-01.azurewebsites.net/api/Dashboard')
         .then(response => {
           if (isMounted.current) {
             // Transform API response to ServiceData structure
@@ -117,39 +115,39 @@ export default function Home() {
               completedService: 0,
             };
             // Count statuses
-            apiData.forEach((item: any) => {
-              const mapped = statusMap[item.jobStatus] || 'underServicing';
-              if (statusCounts[mapped] !== undefined) statusCounts[mapped]++;
+            apiData.forEach((item: Record<string, unknown>) => {
+              const mapped = statusMap[(item.jobStatus as keyof typeof statusMap)] || 'underServicing';
+              if (statusCounts[mapped as keyof typeof statusCounts] !== undefined) statusCounts[mapped as keyof typeof statusCounts]++;
             });
             // Map API data to Service[]
-            const services = apiData.map((item: any) => ({
+            const services = apiData.map((item: Record<string, unknown>) => ({
               id: String(item.jobCardNo),
               status: item.jobStatus,
               vehicle: {
-                model: item.vehicleName || '',
-                regNo: item.vehicleRegNo || '',
-                type: item.vehicleCategory || '',
-                kms: item.kmDriven || 0,
+                model: (item.vehicleName || '') as string,
+                regNo: (item.vehicleRegNo || '') as string,
+                type: (item.vehicleCategory || '') as string,
+                kms: (item.kmDriven || 0) as number,
               },
-              location: item.customerAddress || '',
+              location: (item.customerAddress || '') as string,
               customer: {
-                name: item.customerName || '',
-                phone: item.phoneNumber || '',
-                email: item.customerEmail || '',
+                name: (item.customerName || '') as string,
+                phone: (item.phoneNumber || '') as string,
+                email: (item.customerEmail || '') as string,
                 rating: 0,
-                advisor: item.sourceContactPerson || '',
-                source: item.customerSource || '',
-                address: item.customerAddress || '',
+                advisor: (item.sourceContactPerson || '') as string,
+                source: (item.customerSource || '') as string,
+                address: (item.customerAddress || '') as string,
               },
               serviceDetails: {
                 jcNo: String(item.jobCardNo),
-                estimate: item.invoiceTotal || 0,
+                estimate: (item.invoiceTotal || 0) as number,
                 invoiceNo: item.invoiceId ? String(item.invoiceId) : '',
-                paid: item.netAmount || 0,
-                due: (item.invoiceTotal || 0) - (item.netAmount || 0),
-                type: item.vehicleCategory || '',
-                doa: item.dateOfArrival || '',
-                dod: item.dateOfDelivery || '',
+                paid: (item.netAmount || 0) as number,
+                due: ((item.invoiceTotal || 0) as number) - ((item.netAmount || 0) as number),
+                type: (item.vehicleCategory || '') as string,
+                doa: (item.dateOfArrival || '') as string,
+                dod: (item.dateOfDelivery || '') as string,
                 progress: 0,
                 assignedTechnician: [item.technicianFirstName, item.technicianLastName].filter(Boolean).join(' '),
                 supervisor: [item.supervisorFirstName, item.supervisorLastName].filter(Boolean).join(' '),
@@ -172,22 +170,22 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    axios.get('https://garazo-api-25110123.azurewebsites.net/api/Vehicle')
+      axios.get('https://leommapi-c0gshkekhvbsa4bh.canadacentral-01.azurewebsites.net/api/Vehicle')
       .then(response => dispatch(fetchVehicleList(response.data)))
       .catch(err => console.error(err));
 
-      axios.get('https://garazo-api-25110123.azurewebsites.net/api/VehicleCategory')
+      axios.get('https://leommapi-c0gshkekhvbsa4bh.canadacentral-01.azurewebsites.net/api/VehicleCategory')
       .then(response => dispatch(fetchVehicleCategories(response.data)))
       .catch(err => console.error(err));
 
-      axios.get('https://garazo-api-25110123.azurewebsites.net/api/CustomerSource')
+      axios.get('https://leommapi-c0gshkekhvbsa4bh.canadacentral-01.azurewebsites.net/api/CustomerSource')
       .then(response => dispatch(fetchCustomerSources(response.data)))
       .catch(err => console.error(err));
 
-      axios.get('https://garazo-api-25110123.azurewebsites.net/api/Mechanic')
+      axios.get('https://leommapi-c0gshkekhvbsa4bh.canadacentral-01.azurewebsites.net/api/Mechanic')
       .then(response => dispatch(fetchMechanicList(response.data)))
       .catch(err => console.error(err));
-  }, []);
+  }, [dispatch]);
 
   // Helper function to format dates consistently
   const formatDate = (dateStr: string) => {
@@ -220,7 +218,6 @@ export default function Home() {
       })) || [];
 
     setFilteredServices(tableData);
-    setSelectedStatus(status);
     setShowServiceModal(true);
   };
 
@@ -231,6 +228,7 @@ export default function Home() {
   if (!data) {
     return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
   }
+ 
 
   return (
     <>
@@ -268,7 +266,7 @@ export default function Home() {
           />
         )}
 
-        {services.map((service) => (
+        {/* {services.map((service) => (
           <div key={service.id} className={styles.section}>
             <div className={styles.detailHeader}>
               <div>
@@ -295,6 +293,9 @@ export default function Home() {
               <DetailCard title="Progress" value={`${service.serviceDetails.progress}%`} />
             </div>
           </div>
+        ))} */}
+        {services.map((service) => (
+          <JobCard key={service.id} service={service}/>
         ))}
       </div>
     </>

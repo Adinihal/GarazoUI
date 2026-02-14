@@ -65,7 +65,7 @@ export default function ServiceDetailsModal({ onClose, services }: ServiceDetail
 
   // Search and sort logic
   const filteredAndSortedItems = useMemo(() => {
-    let filtered = allServices.filter(service => 
+    const filtered = allServices.filter(service => 
       Object.values(service).some(value => 
         value.toString().toLowerCase().includes(searchTerm.toLowerCase())
       )

@@ -7,6 +7,7 @@ interface Column<T> {
   key: keyof T;
   header: string;
   width?: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   render?: (value: any, item: T) => React.ReactNode;
 }
 

@@ -18,7 +18,6 @@ export function Pagination({
   totalPages,
   onPageChange,
   totalItems,
-  itemsPerPage,
   showingFrom,
   showingTo,
   filteredFrom
