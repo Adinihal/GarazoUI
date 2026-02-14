@@ -9,6 +9,7 @@ import Header from './common/Header';
 import ServiceDetailsModal from './ServiceDetailsModal';
 import {fetchVehicleList, fetchVehicleCategories, fetchCustomerSources, fetchMechanicList} from '../reduxStore/dashboardSlice';
 import {useDispatch} from "react-redux";
+import JobCard from './ui/Jobcard/JobCard';
 
 interface Customer {
   name: string;
@@ -231,6 +232,7 @@ export default function Home() {
   if (!data) {
     return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
   }
+ 
 
   return (
     <>
@@ -268,7 +270,7 @@ export default function Home() {
           />
         )}
 
-        {services.map((service) => (
+        {/* {services.map((service) => (
           <div key={service.id} className={styles.section}>
             <div className={styles.detailHeader}>
               <div>
@@ -295,7 +297,11 @@ export default function Home() {
               <DetailCard title="Progress" value={`${service.serviceDetails.progress}%`} />
             </div>
           </div>
-        ))}
+        ))} */}
+        {services.map((service) => (
+          <JobCard service={service}/>
+        )
+      )}
       </div>
     </>
   );
