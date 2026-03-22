@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { FaPlus } from 'react-icons/fa';
 import AddVehicleModal from '../components/AddVehicleModal';
 import AddPersonnelModal from '../components/AddPersonnelModal';
@@ -8,22 +9,22 @@ import {useSelector} from "react-redux";
 // import { RootState } from '../store/store';
 
 interface FormData {
-  vehicleNo: string;
+  registrationNumber: string;
   vehicleName: string;
-  vehicleCategory: string;
-  kmDriven: string;
+  category: string;
+  kilometreDriven: string;
   numberPlateColor: string;
-  customerName: string;
-  customerSource: string;
+  name: string;
+  sourceId: string;
   email: string;
-  mobile: string;
-  customerAddress: string;
+  phone: string;
+  address: string;
   chassisNumber: string;
   engineNumber: string;
   dateOfRegistration: string;
   manufacturedYear: string;
-  technician: string;
-  supervisor: string;
+  mechanicId: string;
+  supervisorId: string;
 }
 
 interface FormErrors {
@@ -64,22 +65,22 @@ export default function CustomerRegistrationForm() {
 
 
   const initial: FormData = {
-    vehicleNo: "",
+    registrationNumber: "",
     vehicleName: "",
-    vehicleCategory: "",
-    kmDriven: "",
+    category: "",
+    kilometreDriven: "",
     numberPlateColor: "",
-    customerName: "",
-    customerSource: "",
+    name: "",
+    sourceId: "",
     email: "",
-    mobile: "",
-    customerAddress: "",
+    phone: "",
+    address: "",
     chassisNumber: "",
     engineNumber: "",
     dateOfRegistration: "",
     manufacturedYear: "",
-    technician: "",
-    supervisor: "",
+    mechanicId: "",
+    supervisorId: "",
   };
 
   const [form, setForm] = useState<FormData>(initial);
@@ -109,16 +110,16 @@ export default function CustomerRegistrationForm() {
     const err: FormErrors = {};
     
     // Required fields validation
-    if (!form.vehicleNo) err.vehicleNo = "Vehicle No. is required";
+    if (!form.registrationNumber) err.registrationNumber = "Vehicle No. is required";
     if (!form.vehicleName) err.vehicleName = "Vehicle Name is required";
-    if (!form.vehicleCategory) err.vehicleCategory = "Vehicle Category is required";
-    if (!form.customerName) err.customerName = "Customer Name is required";
+    if (!form.category) err.category = "Vehicle Category is required";
+    if (!form.name) err.name = "Customer Name is required";
     
     // Mobile validation
-    if (!form.mobile) {
-      err.mobile = "Mobile Number is required";
-    } else if (!validateMobile(form.mobile)) {
-      err.mobile = "Please enter a valid 10-digit mobile number";
+    if (!form.phone) {
+      err.phone = "Mobile Number is required";
+    } else if (!validateMobile(form.phone)) {
+      err.phone = "Please enter a valid 10-digit mobile number";
     }
 
     // Email validation (only if provided)
@@ -148,15 +149,35 @@ export default function CustomerRegistrationForm() {
       return;
     }
 
+    const reqBody = {
+      registrationNumber: form.registrationNumber,
+      address: form.address,
+      category: form.category,
+      chassisNumber: form.chassisNumber,
+      dateOfRegistration: form.dateOfRegistration,
+      email: form.email,
+      engineNumber: form.engineNumber,
+      kilometreDriven: parseInt(form.kilometreDriven),
+      manufacturedYear: parseInt(form.manufacturedYear),
+      mechanicId: parseInt(form.mechanicId),
+      name: form.name,
+      numberPlateColor: form.numberPlateColor,
+      phone: form.phone,
+      vehicleName: form.vehicleName,
+      sourceId: parseInt(form.sourceId),
+      supervisorId: parseInt(form.supervisorId),
+    }
+
     setIsLoading(true);
     try {
       // TODO: Replace with your API endpoint
-      const response = await fetch('/api/customer-registration', {
+
+      const response = await fetch('https://garazo-api-25110123.azurewebsites.net/api/CustomerVehicle/create-full', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(form),
+        body: JSON.stringify(reqBody),
       });
 
       if (!response.ok) {
@@ -190,11 +211,11 @@ export default function CustomerRegistrationForm() {
           {/* Column 1 */}
           <div>
             <label className="block text-sm font-medium text-gray-700">Vehicle No. <span className="text-red-500">*</span></label>
-            <input name="vehicleNo" value={form.vehicleNo} onChange={handleChange} placeholder="Type / select vehicle no." className={`mt-1 block w-full rounded-lg border px-3 py-2 shadow-sm focus:ring-2 focus:ring-teal-300 ${errors.vehicleNo ? 'border-red-400' : 'border-gray-200'}`} />
-            {errors.vehicleNo && <p className="text-xs text-red-500 mt-1">{errors.vehicleNo}</p>}
+            <input name="registrationNumber" value={form.registrationNumber} onChange={handleChange} placeholder="Type / select vehicle no." className={`mt-1 block w-full rounded-lg border px-3 py-2 shadow-sm focus:ring-2 focus:ring-teal-300 ${errors.registrationNumber ? 'border-red-400' : 'border-gray-200'}`} />
+            {errors.registrationNumber && <p className="text-xs text-red-500 mt-1">{errors.registrationNumber}</p>}
 
             <label className="block text-sm font-medium text-gray-700 mt-4">Customer Source</label>
-            <select name="customerSource" value={form.customerSource} onChange={handleChange} className="mt-1 block w-full rounded-lg border px-3 py-2 shadow-sm border-gray-200">
+            <select name="sourceId" value={form.sourceId} onChange={handleChange} className="mt-1 block w-full rounded-lg border px-3 py-2 shadow-sm border-gray-200">
               <option value="">Select customer source</option>
               {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
               {customerSources.map((source:any, index:any) => (
@@ -232,7 +253,7 @@ export default function CustomerRegistrationForm() {
               <option value="">Select vehicle</option>
               {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
               {vehicles.map((vehicle:any, index:any) => (
-                <option key={index} value={`${vehicle.vehicleId}`}>
+                <option key={index} value={`${vehicle.vehicleName}`}>
                   {vehicle.vehicleName}
                 </option>
               ))}
@@ -249,19 +270,19 @@ export default function CustomerRegistrationForm() {
           {/* Column 3 vehicleCategories */}
           <div>
             <label className="block text-sm font-medium text-gray-700">Vehicle Category <span className="text-red-500">*</span></label>
-            <select name="vehicleCategory" value={form.vehicleCategory} onChange={handleChange} className={`mt-1 block w-full rounded-lg border px-3 py-2 shadow-sm ${errors.vehicleCategory ? 'border-red-400' : 'border-gray-200'}`}>
+            <select name="category" value={form.category} onChange={handleChange} className={`mt-1 block w-full rounded-lg border px-3 py-2 shadow-sm ${errors.category ? 'border-red-400' : 'border-gray-200'}`}>
               <option value="">Select vehicle category</option>
               {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
               {vehicleCategories.map((category:any, index:any) => (
-                <option key={index} value={`${category.id}`}>
+                <option key={index} value={`${category.categoryName}`}>
                   {category.categoryName}
                 </option>
               ))}
             </select>
-            {errors.vehicleCategory && <p className="text-xs text-red-500 mt-1">{errors.vehicleCategory}</p>}
+            {errors.category && <p className="text-xs text-red-500 mt-1">{errors.category}</p>}
 
             <label className="block text-sm font-medium text-gray-700 mt-4">Kilometre Driven</label>
-            <input name="kmDriven" value={form.kmDriven} onChange={handleChange} placeholder="Kilometer Driven" className="mt-1 block w-full rounded-lg border px-3 py-2 shadow-sm border-gray-200" />
+            <input name="kilometreDriven" value={form.kilometreDriven} onChange={handleChange} placeholder="Kilometer Driven" className="mt-1 block w-full rounded-lg border px-3 py-2 shadow-sm border-gray-200" />
 
             <label className="block text-sm font-medium text-gray-700 mt-4">Manufactured Year</label>
             <input name="manufacturedYear" value={form.manufacturedYear} onChange={handleChange} placeholder="YYYY" className="mt-1 block w-full rounded-lg border px-3 py-2 shadow-sm border-gray-200" />
@@ -280,8 +301,8 @@ export default function CustomerRegistrationForm() {
             </select>
 
             <label className="block text-sm font-medium text-gray-700 mt-4">Mobile Number <span className="text-red-500">*</span></label>
-            <input name="mobile" value={form.mobile} onChange={handleChange} placeholder="(+91) INDIA" className={`mt-1 block w-full rounded-lg border px-3 py-2 shadow-sm ${errors.mobile ? 'border-red-400' : 'border-gray-200'}`} />
-            {errors.mobile && <p className="text-xs text-red-500 mt-1">{errors.mobile}</p>}
+            <input name="phone" value={form.phone} onChange={handleChange} placeholder="(+91) INDIA" className={`mt-1 block w-full rounded-lg border px-3 py-2 shadow-sm ${errors.phone ? 'border-red-400' : 'border-gray-200'}`} />
+            {errors.phone && <p className="text-xs text-red-500 mt-1">{errors.phone}</p>}
 
             <label className="block text-sm font-medium text-gray-700 mt-4">Date Of Registration</label>
             <input name="dateOfRegistration" value={form.dateOfRegistration} onChange={handleChange} type="date" className="mt-1 block w-full rounded-lg border px-3 py-2 shadow-sm border-gray-200" />
@@ -289,11 +310,11 @@ export default function CustomerRegistrationForm() {
 
           <div>
             <label className="block text-sm font-medium text-gray-700">Customer Name <span className="text-red-500">*</span></label>
-            <input name="customerName" value={form.customerName} onChange={handleChange} placeholder="Customer's Name" className={`mt-1 block w-full rounded-lg border px-3 py-2 shadow-sm ${errors.customerName ? 'border-red-400' : 'border-gray-200'}`} />
-            {errors.customerName && <p className="text-xs text-red-500 mt-1">{errors.customerName}</p>}
+            <input name="name" value={form.name} onChange={handleChange} placeholder="Customer's Name" className={`mt-1 block w-full rounded-lg border px-3 py-2 shadow-sm ${errors.name ? 'border-red-400' : 'border-gray-200'}`} />
+            {errors.name && <p className="text-xs text-red-500 mt-1">{errors.name}</p>}
 
             <label className="block text-sm font-medium text-gray-700 mt-4">Customer Address</label>
-            <textarea name="customerAddress" value={form.customerAddress} onChange={handleChange} rows={3} placeholder="Customer Address" className="mt-1 block w-full rounded-lg border px-3 py-2 shadow-sm border-gray-200" />
+            <textarea name="address" value={form.address} onChange={handleChange} rows={3} placeholder="Customer Address" className="mt-1 block w-full rounded-lg border px-3 py-2 shadow-sm border-gray-200" />
           </div>
 
           <div>
@@ -309,15 +330,15 @@ export default function CustomerRegistrationForm() {
               </button>
             </div>
             <select
-              name="technician"
-              value={form.technician}
+              name="mechanicId"
+              value={form.mechanicId}
               onChange={handleChange}
               className="mt-1 block w-full rounded-lg border px-3 py-2 shadow-sm border-gray-200"
             >
               <option value="">Select technician</option>
               {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
               {technicians.map((tech: any) => (
-                <option key={tech.id} value={tech.id}>
+                <option key={tech.mechanicId} value={tech.mechanicId}>
                   {tech.firstName} {tech.lastName}
                 </option>
               ))}
@@ -335,15 +356,15 @@ export default function CustomerRegistrationForm() {
               </button>
             </div>
             <select
-              name="supervisor"
-              value={form.supervisor}
+              name="supervisorId"
+              value={form.supervisorId}
               onChange={handleChange}
               className="mt-1 block w-full rounded-lg border px-3 py-2 shadow-sm border-gray-200"
             >
               <option value="">Select supervisor</option>
               {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
               {supervisors.map((sup: any) => (
-                <option key={sup.id} value={sup.id}>
+                <option key={sup.mechanicId} value={sup.mechanicId}>
                   {sup.firstName} {sup.lastName}
                 </option>
               ))}
@@ -407,7 +428,7 @@ export default function CustomerRegistrationForm() {
             };
             setForm(prev => ({
               ...prev,
-              technician: newTechnician.id
+              mechanicId: newTechnician.id
             }));
           }}
         />
@@ -424,7 +445,7 @@ export default function CustomerRegistrationForm() {
             };
             setForm(prev => ({
               ...prev,
-              supervisor: newSupervisor.id
+              supervisorId: newSupervisor.id
             }));
           }}
         />
