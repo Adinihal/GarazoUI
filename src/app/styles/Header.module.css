@@ -3,6 +3,9 @@
   width: 100%;
   background-color: #f6f6f6;
   font-family: 'Segoe UI', sans-serif;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
 }
 
 /* Top dark bar */
@@ -90,36 +93,8 @@
   font-weight: 500;
 }
 
-/* Bottom navigation bar */
-.menuBar {
-  display: flex;
-  justify-content: center;
-  background-color: #f6f6f6;
-  padding: 10px 0;
-  gap: 20px;
-}
 
-.menuItem {
-  cursor: pointer;
-  padding: 8px 16px;
-  border-radius: 4px;
-  transition: all 0.2s ease;
-  font-weight: 500;
-}
 
-.menuItem:hover {
-  background-color: #e0e0e0;
-}
-
-.menuItem {
-  font-size: 12px;
-  font-weight: bold;
-  font-style: italic;
-  background-color: #e4e4e4;
-  padding: 6px 12px;
-  border-radius: 4px;
-  cursor: pointer;
-}
 .profileContainer {
   position: relative;
   display: inline-block;
@@ -131,7 +106,7 @@
   right: 0;
   background-color: #fff;
   border: 1px solid #ddd;
-  box-shadow: 0px 4px 8px rgba(0,0,0,0.1);
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
   width: 200px;
   z-index: 999;

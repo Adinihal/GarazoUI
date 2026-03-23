@@ -3,10 +3,10 @@ import axios from 'axios';
 import styles from '../styles/Dashboard.module.css';
 import { FaTruck, FaMoneyBill, FaCheckCircle, FaWrench, FaCalendarDay, FaClock } from 'react-icons/fa';
 import StatusCard from './StatusCard';
-import Header from './common/Header';
+import MenuBar from './common/MenuBar';
 import ServiceDetailsModal from './ServiceDetailsModal';
-import {fetchVehicleList, fetchVehicleCategories, fetchCustomerSources, fetchMechanicList} from '../reduxStore/dashboardSlice';
-import {useDispatch} from "react-redux";
+import { fetchVehicleList, fetchVehicleCategories, fetchCustomerSources, fetchMechanicList } from '../reduxStore/dashboardSlice';
+import { useDispatch } from "react-redux";
 import JobCard from './ui/Jobcard/JobCard';
 
 interface Customer {
@@ -83,14 +83,14 @@ export default function Home() {
   const [data, setData] = useState<ServiceData | null>(null);
   const [showServiceModal, setShowServiceModal] = useState(false);
   const [filteredServices, setFilteredServices] = useState<ServiceTableData[]>([]);
-  
+
   // Use a ref to track if the component is mounted
   const isMounted = React.useRef(false);
 
   useEffect(() => {
     isMounted.current = true;
     if (isMounted.current) {
-      axios.get('https://leommapi-c0gshkekhvbsa4bh.canadacentral-01.azurewebsites.net/api/Dashboard')
+      axios.get('https://leommservice-bzh5bxgxcnhjbpfq.canadacentral-01.azurewebsites.net/api/Dashboard')
         .then(response => {
           if (isMounted.current) {
             // Transform API response to ServiceData structure
@@ -170,19 +170,19 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-      axios.get('https://leommapi-c0gshkekhvbsa4bh.canadacentral-01.azurewebsites.net/api/Vehicle')
+    axios.get('https://leommservice-bzh5bxgxcnhjbpfq.canadacentral-01.azurewebsites.net/api/Vehicle')
       .then(response => dispatch(fetchVehicleList(response.data)))
       .catch(err => console.error(err));
 
-      axios.get('https://leommapi-c0gshkekhvbsa4bh.canadacentral-01.azurewebsites.net/api/VehicleCategory')
+    axios.get('https://leommservice-bzh5bxgxcnhjbpfq.canadacentral-01.azurewebsites.net/api/VehicleCategory')
       .then(response => dispatch(fetchVehicleCategories(response.data)))
       .catch(err => console.error(err));
 
-      axios.get('https://leommapi-c0gshkekhvbsa4bh.canadacentral-01.azurewebsites.net/api/CustomerSource')
+    axios.get('https://leommservice-bzh5bxgxcnhjbpfq.canadacentral-01.azurewebsites.net/api/CustomerSource')
       .then(response => dispatch(fetchCustomerSources(response.data)))
       .catch(err => console.error(err));
 
-      axios.get('https://leommapi-c0gshkekhvbsa4bh.canadacentral-01.azurewebsites.net/api/Mechanic')
+    axios.get('https://leommservice-bzh5bxgxcnhjbpfq.canadacentral-01.azurewebsites.net/api/Mechanic')
       .then(response => dispatch(fetchMechanicList(response.data)))
       .catch(err => console.error(err));
   }, [dispatch]);
@@ -228,12 +228,12 @@ export default function Home() {
   if (!data) {
     return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
   }
- 
+
 
   return (
     <>
-      <Header/>
       <div className={styles.container}>
+        <MenuBar />
         <div className={styles.section}>
           <h2 className={styles.sectionTitle}>Service Queue</h2>
           <div className={styles.statusGrid}>
@@ -295,7 +295,7 @@ export default function Home() {
           </div>
         ))} */}
         {services.map((service) => (
-          <JobCard key={service.id} service={service}/>
+          <JobCard key={service.id} service={service} />
         ))}
       </div>
     </>

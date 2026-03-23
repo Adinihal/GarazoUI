@@ -1,0 +1,23 @@
+/* styles/MenuBar.module.css */
+.menuBar {
+  display: flex;
+  justify-content: center;
+  background-color: #f6f6f6;
+  padding: 10px 0;
+  gap: 20px;
+}
+
+.menuItem {
+  font-size: 12px;
+  font-weight: bold;
+  font-style: italic;
+  background-color: #e4e4e4;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.menuItem:hover {
+  background-color: #e0e0e0;
+} 

@@ -30,7 +30,7 @@ export default function LoginPanel() {
     setSuccess(false);
     
     try {
-      const response = await fetch('https://leommapi-c0gshkekhvbsa4bh.canadacentral-01.azurewebsites.net/api/Auth/login', {
+      const response = await fetch('https://leommservice-bzh5bxgxcnhjbpfq.canadacentral-01.azurewebsites.net/api/Auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

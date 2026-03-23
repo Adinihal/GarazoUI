@@ -1,7 +1,11 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { usePathname } from 'next/navigation';
 import ReduxProvider from '../reduxProvider';
+import Header from './common/Header';
+import Loader from './common/Loader';
+import Toast from './common/Toast';
 
 interface ClientProviderProps {
   children: React.ReactNode;
@@ -9,6 +13,7 @@ interface ClientProviderProps {
 
 export default function ClientProvider({ children }: ClientProviderProps) {
   const [isClient, setIsClient] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     setIsClient(true);
@@ -19,9 +24,14 @@ export default function ClientProvider({ children }: ClientProviderProps) {
     return <div style={{ visibility: 'hidden' }}>{children}</div>;
   }
 
-  return(
-            <ReduxProvider>
-                {children}
-            </ReduxProvider>
-  );         
+  const showHeader = pathname !== '/login';
+
+  return (
+    <ReduxProvider>
+      <Loader />
+      <Toast />
+      {showHeader && <Header />}
+      {children}
+    </ReduxProvider>
+  );
 }

@@ -6,16 +6,15 @@ import styles from '../../styles/Header.module.css';
 import {
   FaHome, FaStar, FaCog, FaPowerOff, FaHourglass, FaKey, FaPhoneAlt,
 } from 'react-icons/fa';
-import CustomerRegistrationForm from '@/app/registration/page';
+
 
 const Header = () => {
-  const [showRegistrationModal, setShowRegistrationModal] = useState(false);
+
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
   const router = useRouter();
 
-  const handleRegistrationClick = () => setShowRegistrationModal(true);
-  const handleCloseModal = () => setShowRegistrationModal(false);
+
 
   const logOut = () => {
     localStorage.removeItem('token');
@@ -99,7 +98,12 @@ const Header = () => {
       {/* --- Logo & Header --- */}
       <div className={styles.whiteBanner}>
         <div className={styles.header}>
-          <div className={styles.leftMenu}>
+          <div 
+            className={styles.leftMenu} 
+            onClick={() => router.push('/dashboard')}
+            style={{ cursor: 'pointer' }}
+            title="Go to Dashboard"
+          >
             <div className={styles.logoBox}>
               <img src="assets/GarazoOfficialLogo.png" alt="Logo" className={styles.logo} />
             </div>
@@ -122,20 +126,7 @@ const Header = () => {
         </div>
       </div>
 
-      {/* --- Menu Bar --- */}
-      <div className={styles.menuBar}>
-        <span
-          role="button"
-          tabIndex={0}
-          className={styles.menuItem}
-          onClick={() => router.push('/registration')}
-          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') router.push('/registration'); }}
-        >
-          NEW CUSTOMER REGISTRATION
-        </span>
-        <span className={styles.menuItem}>OFFERS AND PROMOTIONS</span>
-        <span className={styles.menuItem}>SHORTCUTS</span>
-      </div>
+
     </div>
   );
 };
