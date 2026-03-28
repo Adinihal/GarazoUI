@@ -8,6 +8,8 @@ import ServiceDetailsModal from './ServiceDetailsModal';
 import { fetchVehicleList, fetchVehicleCategories, fetchCustomerSources, fetchMechanicList } from '../reduxStore/dashboardSlice';
 import { useDispatch } from "react-redux";
 import JobCard from './ui/Jobcard/JobCard';
+import { VehicleCatalog } from '../types/vehicle';
+import { vehicleService } from '../services/vehicleService';
 
 interface Customer {
   name: string;
@@ -170,21 +172,25 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    axios.get('https://leommservice-bzh5bxgxcnhjbpfq.canadacentral-01.azurewebsites.net/api/Vehicle')
-      .then(response => dispatch(fetchVehicleList(response.data)))
-      .catch(err => console.error(err));
+    const loadData = async () => {
+      try {
+        const [vehicleCatalog, vehicleCategories, customerSources, mechanics] = await Promise.all([
+          vehicleService.fetchVehicleCatalog(),
+          vehicleService.fetchVehicleCategories(),
+          vehicleService.fetchCustomerSources(),
+          vehicleService.fetchMechanics()
+        ]);
 
-    axios.get('https://leommservice-bzh5bxgxcnhjbpfq.canadacentral-01.azurewebsites.net/api/VehicleCategory')
-      .then(response => dispatch(fetchVehicleCategories(response.data)))
-      .catch(err => console.error(err));
+        dispatch(fetchVehicleList(vehicleCatalog));
+        dispatch(fetchVehicleCategories(vehicleCategories));
+        dispatch(fetchCustomerSources(customerSources));
+        dispatch(fetchMechanicList(mechanics));
+      } catch (err) {
+        console.error('Error loading data:', err);
+      }
+    };
 
-    axios.get('https://leommservice-bzh5bxgxcnhjbpfq.canadacentral-01.azurewebsites.net/api/CustomerSource')
-      .then(response => dispatch(fetchCustomerSources(response.data)))
-      .catch(err => console.error(err));
-
-    axios.get('https://leommservice-bzh5bxgxcnhjbpfq.canadacentral-01.azurewebsites.net/api/Mechanic')
-      .then(response => dispatch(fetchMechanicList(response.data)))
-      .catch(err => console.error(err));
+    loadData();
   }, [dispatch]);
 
   // Helper function to format dates consistently
