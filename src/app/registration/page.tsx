@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from 'next/navigation';
 import { FaPlus } from 'react-icons/fa';
 import { useSelector, useDispatch } from "react-redux";
@@ -11,10 +11,17 @@ import AddPersonnelModal from '../components/AddPersonnelModal';
 import RegistrationHeader from '../components/RegistrationHeader';
 import InputField from '../components/common/InputField';
 import SelectField from '../components/common/SelectField';
+import { Button } from '../components/ui/Button';
 
 import { FormData, FormErrors, Personnel, initialFormData } from '../types/registration';
 import { validateRegistrationForm } from '../utils/validation';
 import { BASE_URL } from '../utils/apiConfig';
+import { NUMBER_PLATE_COLORS } from '../utils/constants';
+import { isNull } from '../utils/helpers';
+import axios from "axios";
+import { VehicleCatalog } from "../types/vehicle";
+import { fetchVehicleList, fetchVehicleCategories, fetchCustomerSources, fetchMechanicList } from "../reduxStore/dashboardSlice";
+import { vehicleService } from "../services/vehicleService";
 
 export default function CustomerRegistrationForm() {
   const router = useRouter();
@@ -38,6 +45,58 @@ export default function CustomerRegistrationForm() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const supervisors = useSelector((state: any) => state.dashboard.mechanicList);
 
+useEffect(() => {
+  const loadAllData = async () => {
+    try {
+      const promises = [];
+
+      // Load vehicle data conditionally
+      if (isNull(vehicles) || vehicles.length === 0) {
+        promises.push(
+          vehicleService.fetchVehicleCatalog().then(data => {
+            dispatch(fetchVehicleList(data));
+          })
+        );
+      }
+
+      // Load vehicle categories conditionally
+      if (isNull(vehicleCategories) || vehicleCategories.length === 0) {
+        promises.push(
+          vehicleService.fetchVehicleCategories().then(data => {
+            dispatch(fetchVehicleCategories(data));
+          })
+        );
+      }
+
+      // Load customer sources conditionally
+      if (isNull(customerSources) || customerSources.length === 0) {
+        promises.push(
+          vehicleService.fetchCustomerSources().then(data => {
+            dispatch(fetchCustomerSources(data));
+          })
+        );
+      }
+
+      // Load mechanics conditionally
+      if (isNull(technicians) || technicians.length === 0) {
+        promises.push(
+          vehicleService.fetchMechanics().then(data => {
+            dispatch(fetchMechanicList(data));
+          })
+        );
+      }
+
+      // Execute all conditional API calls concurrently
+      if (promises.length > 0) {
+        await Promise.all(promises);
+      }
+    } catch (err) {
+      console.error('Error loading data:', err);
+    }
+  };
+
+  loadAllData();
+}, [vehicles, vehicleCategories, customerSources, technicians, dispatch])
   function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
@@ -159,7 +218,7 @@ export default function CustomerRegistrationForm() {
                   value={form.vehicleName}
                   onChange={handleChange}
                   error={errors.vehicleName}
-                  options={(vehicles || []).map((v: any) => ({ value: v.vehicleId, label: v.vehicleName }))}
+                  options={(vehicles || []).map((v: any) => ({ value: v.catalogId, label: v.model }))}
                   placeholder="Select vehicle"
                 />
               </div>
@@ -231,11 +290,7 @@ export default function CustomerRegistrationForm() {
               label="Number Plate Color"
               value={form.numberPlateColor}
               onChange={handleChange}
-              options={[
-                { value: 'white', label: 'White' },
-                { value: 'yellow', label: 'Yellow' },
-                { value: 'black', label: 'Black' }
-              ]}
+              options={NUMBER_PLATE_COLORS}
               placeholder="Select number plate color"
             />
             <InputField
@@ -326,24 +381,27 @@ export default function CustomerRegistrationForm() {
 
         <p className="text-sm text-gray-500 mt-6">Note: <span className="text-red-500">*</span> Fields Are Mandatory</p>
 
-        <div className="flex gap-4 mt-6">
-          <button
+        <div className="flex justify-end gap-4 mt-6">
+          <Button
             type="submit"
-            disabled={isLoading}
-            className={`flex-1 py-3 rounded-2xl bg-green-50 border border-green-300 text-green-800 hover:opacity-90 shadow-sm transition-all
-              ${isLoading ? 'opacity-50 cursor-not-allowed' : 'hover:bg-green-100'}`}
+            variant="success"
+            size="sm"
+            loading={isLoading}
+            loadingText="Submitting..."
+            className="w-[152px]"
           >
-            {isLoading ? 'Submitting...' : 'Submit'}
-          </button>
-          <button
+            Submit
+          </Button>
+          <Button
             type="button"
-            onClick={() => { setForm(initialFormData); setErrors({}); router.push('/dashboard'); }}
+            variant="danger"
+            size="sm"
             disabled={isLoading}
-            className={`flex-1 py-3 rounded-2xl bg-red-50 border border-red-300 text-red-800 shadow-sm transition-all
-              ${isLoading ? 'opacity-50 cursor-not-allowed' : 'hover:bg-red-100'}`}
+            onClick={() => { setForm(initialFormData); setErrors({}); router.push('/dashboard'); }}
+            className="w-[152px]"
           >
             Close
-          </button>
+          </Button>
         </div>
       </form>
 
