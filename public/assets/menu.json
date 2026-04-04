@@ -1,0 +1,93 @@
+[
+  {
+    "id": 1,
+    "heading": "CRM",
+    "icon": "CgUserList",
+    "items": [
+      { "label": "Manage CRM", "link": "#" },
+      { "label": "My Followups", "link": "#" }
+    ]
+  },
+  {
+    "id": 2,
+    "heading": "Manage Users",
+    "icon": "FaUser",
+    "items": [
+      { "label": "Manage Designations", "link": "#" },
+      { "label": "Manage Employees", "link": "#" }
+    ]
+  },
+  {
+    "id": 3,
+    "heading": "Business Reports",
+    "icon": "FaChartLine",
+    "items": [
+      { "label": "Inward Goods Purchase GST Report", "link": "#" },
+      { "label": "Vendor Purchase Report", "link": "#" },
+      { "label": "Business Reports", "link": "#" },
+      { "label": "By Day Book Reports", "link": "#" },
+      { "label": "By Insurance Claim", "link": "#" },
+      { "label": "By Payment Reports", "link": "#" },
+      { "label": "By Spares & Services", "link": "#" },
+      { "label": "By Stock In/Out Reports", "link": "#" },
+      { "label": "By Tech & Super", "link": "#" },
+      { "label": "GST Filing Reports", "link": "#" },
+      { "label": "Report By Invoices", "link": "#" },
+      { "label": "Spare Quotation Reports", "link": "#" },
+      { "label": "Spares Consumption Report", "link": "#" },
+      { "label": "Spares Transfer", "link": "#" },
+      { "label": "View Logs", "link": "#" },
+      { "label": "Manage Workshop Info", "link": "#" }
+    ]
+  },
+  {
+    "id": 4,
+    "heading": "Customer Reports",
+    "icon": "FaChartBar",
+    "items": [
+      { "label": "By Customer Source", "link": "#" },
+      { "label": "By Happy/Unhappy Customer", "link": "#" },
+      {"label": "Customer Reports", "link": "#"},
+      {"label": "Stocks Report", "link": "#"},
+      {"label": "Upcoming Insurance Renewals", "link": "#"},
+      {"label": "Upcoming Services", "link": "#"}
+    ]
+  },
+  {
+    "id": 5,
+    "heading": "System Configuration",
+    "icon": "IoMdSettings",
+    "items": [
+      {"label": "Manage Brandwise Consumables", "link": "#"},
+      {"label": "Manage Consumable Brands", "link": "#"},
+      {"label": "Manage Customer Source", "link": "#"},
+      {"label": "Manage Insurance Provider", "link": "#"},
+      {"label": "Manage Insurance Status Info", "link": "#"},
+      {"label": "Manage Invoicing Category Info", "link": "#"},
+      {"label": "Manage Message Templates", "link": "#"},
+      {"label": "Manage Spares Master", "link": "#"},
+      {"label": "Manage Tax Rates / HSN Code", "link": "#"},
+      {"label": "Manage Terms n Conditions", "link": "#"},
+      {"label": "Manage Vehicle Category", "link": "#"}
+    ]
+  },
+  {
+    "id": 6,
+    "heading": "Manage Workshop",
+    "icon": "BsSuitcaseLg",
+    "items": [
+      { "label": "Manage Workshop Salvages", "link": "#" },
+      { "label": "Business Dashboard", "link": "#" },
+      { "label": "Credit/Debit Notes", "link": "#" },
+      { "label": "Inventory Management", "link": "#" },
+      { "label": "Manage Counter Sales", "link": "#" },
+      { "label": "Manage Day Book", "link": "#" },
+      { "label": "Manage Package Sales", "link": "#" },
+      { "label": "Manage Packages", "link": "#" },
+      { "label": "Manage Services", "link": "#" },
+      { "label": "Offers & Promotions", "link": "#" },
+      { "label": "Service Status", "link": "#" },
+      { "label": "Store Management", "link": "#" }
+    ]
+  }
+]

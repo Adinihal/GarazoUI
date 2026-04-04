@@ -11,8 +11,8 @@
 /* Top dark bar */
 .topBar {
   background-color: #2f2c2c;
-  display: flex;
-  justify-content: flex-end;
+  /* display: flex;
+  justify-content: flex-end; */
   padding: 16px;
   color: white;
   font-size: 15px;
@@ -27,6 +27,7 @@
 .icon {
   font-size: 16px;
   cursor: pointer;
+  display: inline-block;
 }
 
 /* Main white header */
