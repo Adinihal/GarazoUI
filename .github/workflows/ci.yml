@@ -21,5 +21,5 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Run build without lint
-        run: npm run build -- --no-lint
+      - name: Run build
+        run: npx next build
