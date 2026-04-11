@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { VehicleCatalog } from '../types/vehicle';
 
-const API_BASE_URL = 'https://leommservice-bzh5bxgxcnhjbpfq.canadacentral-01.azurewebsites.net/api';
+import { BASE_URL as API_BASE_URL } from '../utils/apiConfig';
 
 export const vehicleService = {
   /**
@@ -14,6 +14,21 @@ export const vehicleService = {
       return response.data;
     } catch (error) {
       console.error('Error fetching vehicle catalog:', error);
+      throw error;
+    }
+  },
+
+  /**
+   * Creates a new vehicle catalog entry
+   * @param data The vehicle data to post
+   * @returns Promise<any>
+   */
+  createVehicleCatalog: async (data: { brand: string; model: string; variant: string }): Promise<any> => {
+    try {
+      const response = await axios.post(`${API_BASE_URL}/VehicleCatalog`, data);
+      return response.data;
+    } catch (error) {
+      console.error('Error creating vehicle catalog:', error);
       throw error;
     }
   },
@@ -56,6 +71,34 @@ export const vehicleService = {
       return response.data;
     } catch (error) {
       console.error('Error fetching mechanics:', error);
+      throw error;
+    }
+  },
+
+  /**
+   * Fetches supervisors list from the API
+   * @returns Promise<any[]>
+   */
+  fetchSupervisors: async (): Promise<any[]> => {
+    try {
+      const response = await axios.get(`${API_BASE_URL}/Superviser`);
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching supervisors:', error);
+      throw error;
+    }
+  },
+
+  /**
+   * Creates a new personnel
+   */
+  createPersonnel: async (type: 'Technician' | 'Supervisor', data: any): Promise<any> => {
+    try {
+      const endpoint = type === 'Supervisor' ? 'Superviser' : 'Mechanic';
+      const response = await axios.post(`${API_BASE_URL}/${endpoint}`, data);
+      return response.data;
+    } catch (error) {
+      console.error(`Error creating ${type}:`, error);
       throw error;
     }
   }
