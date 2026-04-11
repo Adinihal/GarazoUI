@@ -3,6 +3,23 @@ import { VehicleCatalog } from '../types/vehicle';
 
 const API_BASE_URL = 'https://leommservice-bzh5bxgxcnhjbpfq.canadacentral-01.azurewebsites.net/api';
 
+interface VehicleCategory {
+  id: number;
+  categoryName: string;
+}
+
+interface CustomerSource {
+  sourceId: number | string;
+  companyName: string;
+}
+
+interface Mechanic {
+  id?: number;
+  mechanicId?: number;
+  firstName?: string;
+  lastName?: string;
+}
+
 export const vehicleService = {
   /**
    * Fetches vehicle catalog data from the API

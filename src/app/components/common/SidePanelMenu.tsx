@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, type ElementType } from 'react';
 import { Menu, X } from 'lucide-react';
 import menuData from '../../../../public/assets/menu.json';
 import { CgUserList } from 'react-icons/cg';
@@ -10,7 +10,7 @@ import { BsSuitcaseLg } from "react-icons/bs";
 import { FaChartLine } from "react-icons/fa";
 import { FaUser } from 'react-icons/fa';
 
-const iconMap: Record<string, any> = {
+const iconMap: Record<string, ElementType> = {
   CgUserList,
   FaUser,
   FaChartLine,
@@ -18,8 +18,6 @@ const iconMap: Record<string, any> = {
   IoMdSettings,
   BsSuitcaseLg
 }; 
-import { RiH5 } from 'react-icons/ri';
-
 export default function SidePanelMenu() {
   const [isOpen, setIsOpen] = useState(false);
 

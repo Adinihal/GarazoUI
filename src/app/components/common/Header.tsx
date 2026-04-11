@@ -1,10 +1,9 @@
 'use client';
 import React, { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import Image from 'next/image';
 import styles from '../../styles/Header.module.css';
 import {
-  FaHome, FaStar, FaCog, FaPowerOff, FaHourglass, FaKey, FaPhoneAlt,  FaBars
+  FaHome, FaStar, FaCog, FaPowerOff, FaHourglass, FaKey, FaPhoneAlt
 } from 'react-icons/fa';
 import SidePanelMenu from './SidePanelMenu';
 

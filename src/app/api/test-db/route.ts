@@ -4,7 +4,7 @@ import pool from '@/app/lib/db';
 export async function GET() {
   try {
     const connection = await pool.getConnection();
-    const result = await connection.ping();
+    await connection.ping();
     connection.release();
 
     return NextResponse.json({
@@ -12,14 +12,14 @@ export async function GET() {
       message: 'Successfully connected to Azure MySQL',
       timestamp: new Date().toISOString(),
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Database connection error:', error);
+    const err = error instanceof Error ? error : new Error('Unknown error');
+
     return NextResponse.json(
       {
         success: false,
-        error: error.message,
-        code: error.code,
-        sqlState: error.sqlState,
+        error: err.message,
       },
       { status: 500 }
     );

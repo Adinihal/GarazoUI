@@ -18,10 +18,37 @@ import { validateRegistrationForm } from '../utils/validation';
 import { BASE_URL } from '../utils/apiConfig';
 import { NUMBER_PLATE_COLORS } from '../utils/constants';
 import { isNull } from '../utils/helpers';
-import axios from "axios";
 import { VehicleCatalog } from "../types/vehicle";
 import { fetchVehicleList, fetchVehicleCategories, fetchCustomerSources, fetchMechanicList } from "../reduxStore/dashboardSlice";
 import { vehicleService } from "../services/vehicleService";
+
+interface VehicleCategoryItem {
+  id: number | string;
+  categoryName: string;
+}
+
+interface CustomerSourceItem {
+  sourceId: number | string;
+  companyName: string;
+}
+
+interface MechanicItem {
+  id?: number;
+  mechanicId?: number;
+  firstName: string;
+  lastName: string;
+}
+
+interface DashboardState {
+  vehicleList?: VehicleCatalog[];
+  vehicleCategories?: VehicleCategoryItem[];
+  customerSources?: CustomerSourceItem[];
+  mechanicList?: MechanicItem[];
+}
+
+interface AppState {
+  dashboard: DashboardState;
+}
 
 export default function CustomerRegistrationForm() {
   const router = useRouter();
@@ -34,16 +61,11 @@ export default function CustomerRegistrationForm() {
   const [errors, setErrors] = useState<FormErrors>({});
   const [isLoading, setIsLoading] = useState(false);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const vehicles = useSelector((state: any) => state.dashboard.vehicleList);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const vehicleCategories = useSelector((state: any) => state.dashboard.vehicleCategories);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const customerSources = useSelector((state: any) => state.dashboard.customerSources);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const technicians = useSelector((state: any) => state.dashboard.mechanicList);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const supervisors = useSelector((state: any) => state.dashboard.mechanicList);
+  const vehicles = useSelector((state: AppState) => state.dashboard.vehicleList);
+  const vehicleCategories = useSelector((state: AppState) => state.dashboard.vehicleCategories);
+  const customerSources = useSelector((state: AppState) => state.dashboard.customerSources);
+  const technicians = useSelector((state: AppState) => state.dashboard.mechanicList);
+  const supervisors = useSelector((state: AppState) => state.dashboard.mechanicList);
 
 useEffect(() => {
   const loadAllData = async () => {
@@ -120,8 +142,7 @@ useEffect(() => {
     }
 
     dispatch(showLoader("Submitting vehicle registration..."));
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const selectedVehicle = (vehicles || []).find((v: any) => v.vehicleId?.toString() === form.vehicleName);
+    const selectedVehicle = (vehicles || []).find((v) => v.vehicleId?.toString() === form.vehicleName);
     const registrationNumber = selectedVehicle ? selectedVehicle.registrationNumber : "";
     const catalogId = selectedVehicle ? selectedVehicle.catalogId : 0;
 
@@ -187,13 +208,12 @@ useEffect(() => {
               error={errors.vehicleNo}
               requiredIndicator
             />
-            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
             <SelectField
               name="customerSource"
               label="Customer Source"
               value={form.customerSource}
               onChange={handleChange}
-              options={(customerSources || []).map((s: any) => ({ value: s.sourceId, label: s.companyName }))}
+              options={(customerSources || []).map((s) => ({ value: s.sourceId, label: s.companyName }))}
               placeholder="Select customer source"
             />
             <InputField
@@ -209,7 +229,6 @@ useEffect(() => {
           <div>
             <div className="flex justify-between items-end mb-[-12px] mt-0 lg:mt-4">
               <div className="flex-1">
-                {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                 <SelectField
                   className="mt-0"
                   name="vehicleName"
@@ -218,7 +237,7 @@ useEffect(() => {
                   value={form.vehicleName}
                   onChange={handleChange}
                   error={errors.vehicleName}
-                  options={(vehicles || []).map((v: any) => ({ value: v.catalogId, label: v.model }))}
+                  options={(vehicles || []).map((v) => ({ value: v.catalogId, label: v.model }))}
                   placeholder="Select vehicle"
                 />
               </div>
@@ -251,7 +270,6 @@ useEffect(() => {
 
           {/* Column 3 */}
           <div>
-            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
             <SelectField
               className="mt-0 lg:mt-4"
               name="vehicleCategory"
@@ -260,7 +278,7 @@ useEffect(() => {
               value={form.vehicleCategory}
               onChange={handleChange}
               error={errors.vehicleCategory}
-              options={(vehicleCategories || []).map((c: any) => ({ value: c.id, label: c.categoryName }))}
+              options={(vehicleCategories || []).map((c) => ({ value: c.id, label: c.categoryName }))}
               placeholder="Select vehicle category"
             />
             <InputField
@@ -336,14 +354,13 @@ useEffect(() => {
           <div>
             <div className="flex justify-between items-end mb-[-12px]">
               <div className="flex-1">
-                {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                 <SelectField
                   className="mt-0"
                   name="technician"
                   label="Technician"
                   value={form.technician}
                   onChange={handleChange}
-                  options={(technicians || []).map((t: any) => ({ value: t.id || t.mechanicId, label: `${t.firstName} ${t.lastName}` }))}
+                  options={(technicians || []).map((t) => ({ value: t.id ?? t.mechanicId ?? 0, label: `${t.firstName} ${t.lastName}` }))}
                   placeholder="Select technician"
                 />
               </div>
@@ -358,13 +375,12 @@ useEffect(() => {
 
             <div className="flex justify-between items-end mb-[-12px]">
               <div className="flex-1">
-                {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                 <SelectField
                   name="supervisor"
                   label="Supervisor"
                   value={form.supervisor}
                   onChange={handleChange}
-                  options={(supervisors || []).map((s: any) => ({ value: s.mechanicId || s.id, label: `${s.firstName} ${s.lastName}` }))}
+                  options={(supervisors || []).map((s) => ({ value: s.mechanicId ?? s.id ?? 0, label: `${s.firstName} ${s.lastName}` }))}
                   placeholder="Select supervisor"
                 />
               </div>
@@ -410,7 +426,7 @@ useEffect(() => {
           onClose={() => setShowAddVehicleModal(false)}
           onSave={(vehicleData) => {
             const newVehicle = {
-              vehicleId: (vehicles.length + 1).toString(),
+              vehicleId: ((vehicles?.length ?? 0) + 1).toString(),
               vehicleName: `${vehicleData.brand} ${vehicleData.model} ${vehicleData.variant || ''}`.trim()
             };
             setForm(prev => ({ ...prev, vehicleName: newVehicle.vehicleName }));
@@ -423,7 +439,7 @@ useEffect(() => {
           type="Technician"
           onClose={() => setShowAddTechnicianModal(false)}
           onSave={(personnelData) => {
-            const newTechnician: Personnel = { ...personnelData, id: (technicians.length + 1).toString() };
+            const newTechnician: Personnel = { ...personnelData, id: ((technicians?.length ?? 0) + 1).toString() };
             setForm(prev => ({ ...prev, technician: newTechnician.id }));
           }}
         />
@@ -434,7 +450,7 @@ useEffect(() => {
           type="Supervisor"
           onClose={() => setShowAddSupervisorModal(false)}
           onSave={(personnelData) => {
-            const newSupervisor: Personnel = { ...personnelData, id: (supervisors.length + 1).toString() };
+            const newSupervisor: Personnel = { ...personnelData, id: ((supervisors?.length ?? 0) + 1).toString() };
             setForm(prev => ({ ...prev, supervisor: newSupervisor.id }));
           }}
         />

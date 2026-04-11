@@ -8,7 +8,6 @@ import ServiceDetailsModal from './ServiceDetailsModal';
 import { fetchVehicleList, fetchVehicleCategories, fetchCustomerSources, fetchMechanicList } from '../reduxStore/dashboardSlice';
 import { useDispatch } from "react-redux";
 import JobCard from './ui/Jobcard/JobCard';
-import { VehicleCatalog } from '../types/vehicle';
 import { vehicleService } from '../services/vehicleService';
 
 interface Customer {

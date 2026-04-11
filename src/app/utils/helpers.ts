@@ -3,11 +3,15 @@
  */
 
 /**
+ * Utility functions for common operations
+ */
+
+/**
  * Checks if a value is null or undefined
  * @param value - The value to check
  * @returns true if the value is null or undefined, false otherwise
  */
-export const isNull = (value: any): boolean => {
+export const isNull = (value: unknown): value is null | undefined => {
   return value === null || value === undefined;
 };
 
@@ -16,7 +20,7 @@ export const isNull = (value: any): boolean => {
  * @param value - The value to check
  * @returns true if the value is null, undefined, or empty
  */
-export const isNullOrEmpty = (value: any): boolean => {
+export const isNullOrEmpty = (value: unknown): boolean => {
   if (isNull(value)) return true;
   if (typeof value === 'string') return value.trim().length === 0;
   if (Array.isArray(value)) return value.length === 0;
@@ -28,6 +32,6 @@ export const isNullOrEmpty = (value: any): boolean => {
  * @param value - The value to check
  * @returns true if the value is not null and not undefined
  */
-export const isNotNull = (value: any): boolean => {
+export const isNotNull = (value: unknown): boolean => {
   return !isNull(value);
 };
