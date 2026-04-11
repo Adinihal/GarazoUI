@@ -10,6 +10,7 @@ import { useDispatch } from "react-redux";
 import JobCard from './ui/Jobcard/JobCard';
 import { VehicleCatalog } from '../types/vehicle';
 import { vehicleService } from '../services/vehicleService';
+import { BASE_URL } from '../utils/apiConfig';
 
 interface Customer {
   name: string;
@@ -92,7 +93,7 @@ export default function Home() {
   useEffect(() => {
     isMounted.current = true;
     if (isMounted.current) {
-      axios.get('https://leommservice-bzh5bxgxcnhjbpfq.canadacentral-01.azurewebsites.net/api/Dashboard')
+      axios.get(`${BASE_URL}/Dashboard`)
         .then(response => {
           if (isMounted.current) {
             // Transform API response to ServiceData structure

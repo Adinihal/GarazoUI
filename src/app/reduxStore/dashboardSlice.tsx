@@ -6,7 +6,8 @@ const dashboardSlice = createSlice({
         vehicleList: [],
         vehicleCategories: [],
         customerSources: [],
-        mechanicList : []
+        mechanicList : [],
+        supervisorList: []
     },
     reducers: {
         fetchVehicleList(state, action) {
@@ -20,9 +21,12 @@ const dashboardSlice = createSlice({
         },
         fetchMechanicList(state, action) {
             state.mechanicList = action.payload;
+        },
+        fetchSupervisorList(state, action) {
+            state.supervisorList = action.payload;
         }
     }
 });
 
-export const { fetchVehicleList, fetchVehicleCategories, fetchCustomerSources, fetchMechanicList } = dashboardSlice.actions;
+export const { fetchVehicleList, fetchVehicleCategories, fetchCustomerSources, fetchMechanicList, fetchSupervisorList } = dashboardSlice.actions;
 export default dashboardSlice.reducer;

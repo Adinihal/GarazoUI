@@ -20,7 +20,7 @@ import { NUMBER_PLATE_COLORS } from '../utils/constants';
 import { isNull } from '../utils/helpers';
 import axios from "axios";
 import { VehicleCatalog } from "../types/vehicle";
-import { fetchVehicleList, fetchVehicleCategories, fetchCustomerSources, fetchMechanicList } from "../reduxStore/dashboardSlice";
+import { fetchVehicleList, fetchVehicleCategories, fetchCustomerSources, fetchMechanicList, fetchSupervisorList } from "../reduxStore/dashboardSlice";
 import { vehicleService } from "../services/vehicleService";
 
 export default function CustomerRegistrationForm() {
@@ -43,60 +43,70 @@ export default function CustomerRegistrationForm() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const technicians = useSelector((state: any) => state.dashboard.mechanicList);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const supervisors = useSelector((state: any) => state.dashboard.mechanicList);
+  const supervisors = useSelector((state: any) => state.dashboard.supervisorList);
 
-useEffect(() => {
-  const loadAllData = async () => {
-    try {
-      const promises = [];
+  useEffect(() => {
+    const loadAllData = async () => {
+      try {
+        const promises = [];
 
-      // Load vehicle data conditionally
-      if (isNull(vehicles) || vehicles.length === 0) {
-        promises.push(
-          vehicleService.fetchVehicleCatalog().then(data => {
-            dispatch(fetchVehicleList(data));
-          })
-        );
+        // Load vehicle data conditionally
+        if (isNull(vehicles) || vehicles.length === 0) {
+          promises.push(
+            vehicleService.fetchVehicleCatalog().then(data => {
+              console.log("data---**", data)
+              dispatch(fetchVehicleList(data));
+            })
+          );
+        }
+
+        // Load vehicle categories conditionally
+        if (isNull(vehicleCategories) || vehicleCategories.length === 0) {
+          promises.push(
+            vehicleService.fetchVehicleCategories().then(data => {
+              dispatch(fetchVehicleCategories(data));
+            })
+          );
+        }
+
+        // Load customer sources conditionally
+        if (isNull(customerSources) || customerSources.length === 0) {
+          promises.push(
+            vehicleService.fetchCustomerSources().then(data => {
+              dispatch(fetchCustomerSources(data));
+            })
+          );
+        }
+
+        // Load mechanics conditionally
+        if (isNull(technicians) || technicians.length === 0) {
+          promises.push(
+            vehicleService.fetchMechanics().then(data => {
+              dispatch(fetchMechanicList(data));
+            })
+          );
+        }
+
+        // Load supervisors conditionally
+        if (isNull(supervisors) || supervisors.length === 0) {
+          promises.push(
+            vehicleService.fetchSupervisors().then(data => {
+              dispatch(fetchSupervisorList(data));
+            })
+          );
+        }
+
+        // Execute all conditional API calls concurrently
+        if (promises.length > 0) {
+          await Promise.all(promises);
+        }
+      } catch (err) {
+        console.error('Error loading data:', err);
       }
+    };
 
-      // Load vehicle categories conditionally
-      if (isNull(vehicleCategories) || vehicleCategories.length === 0) {
-        promises.push(
-          vehicleService.fetchVehicleCategories().then(data => {
-            dispatch(fetchVehicleCategories(data));
-          })
-        );
-      }
-
-      // Load customer sources conditionally
-      if (isNull(customerSources) || customerSources.length === 0) {
-        promises.push(
-          vehicleService.fetchCustomerSources().then(data => {
-            dispatch(fetchCustomerSources(data));
-          })
-        );
-      }
-
-      // Load mechanics conditionally
-      if (isNull(technicians) || technicians.length === 0) {
-        promises.push(
-          vehicleService.fetchMechanics().then(data => {
-            dispatch(fetchMechanicList(data));
-          })
-        );
-      }
-
-      // Execute all conditional API calls concurrently
-      if (promises.length > 0) {
-        await Promise.all(promises);
-      }
-    } catch (err) {
-      console.error('Error loading data:', err);
-    }
-  };
-
-  loadAllData();
-}, [vehicles, vehicleCategories, customerSources, technicians, dispatch])
+    loadAllData();
+  }, [vehicles, vehicleCategories, customerSources, technicians, supervisors, dispatch])
   function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
@@ -120,23 +130,27 @@ useEffect(() => {
     }
 
     dispatch(showLoader("Submitting vehicle registration..."));
+    debugger
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const selectedVehicle = (vehicles || []).find((v: any) => v.vehicleId?.toString() === form.vehicleName);
+    const selectedVehicle = (vehicles || []).find((v: any) => v.catalogId?.toString() === form.vehicleName);
     const registrationNumber = selectedVehicle ? selectedVehicle.registrationNumber : "";
     const catalogId = selectedVehicle ? selectedVehicle.catalogId : 0;
+    {
 
+    }
     const payload = {
       "name": form.customerName,
       "phone": form.mobile,
       "email": form.email,
       "address": form.customerAddress,
       "sourceId": Number(form.customerSource),
-      "registrationNumber": registrationNumber,
+      "registrationNumber": form.vehicleNo,
       "vehicleName": form.vehicleName,
       "category": form.vehicleCategory,
       "kilometreDriven": Number(form.kmDriven),
       "numberPlateColor": form.numberPlateColor,
       "chassisNumber": form.chassisNumber,
+      "engineNumber": form.engineNumber,
       "manufacturedYear": Number(form.manufacturedYear),
       "dateOfRegistration": form.dateOfRegistration,
       "catalogId": catalogId,
@@ -146,7 +160,7 @@ useEffect(() => {
       "status": "open",
       "arrivalDate": new Date().toISOString() // current date and time
     };
-
+    console.log("payload----", payload)
     try {
       const response = await fetch(`${BASE_URL}/CustomerVehicle/create-full`, {
         method: 'POST',
@@ -218,7 +232,7 @@ useEffect(() => {
                   value={form.vehicleName}
                   onChange={handleChange}
                   error={errors.vehicleName}
-                  options={(vehicles || []).map((v: any) => ({ value: v.catalogId, label: v.model }))}
+                  options={(vehicles || []).map((v: any) => ({ value: v.catalogId, label: `${v.brand} ${v.model} ${v.variant || ''}`.trim() }))}
                   placeholder="Select vehicle"
                 />
               </div>
@@ -364,7 +378,7 @@ useEffect(() => {
                   label="Supervisor"
                   value={form.supervisor}
                   onChange={handleChange}
-                  options={(supervisors || []).map((s: any) => ({ value: s.mechanicId || s.id, label: `${s.firstName} ${s.lastName}` }))}
+                  options={(supervisors || []).map((s: any) => ({ value: s.superviserId || s.id, label: `${s.firstName} ${s.lastName}` }))}
                   placeholder="Select supervisor"
                 />
               </div>
@@ -408,13 +422,13 @@ useEffect(() => {
       {showAddVehicleModal && (
         <AddVehicleModal
           onClose={() => setShowAddVehicleModal(false)}
-          onSave={(vehicleData) => {
-            const newVehicle = {
-              vehicleId: (vehicles.length + 1).toString(),
-              vehicleName: `${vehicleData.brand} ${vehicleData.model} ${vehicleData.variant || ''}`.trim()
-            };
-            setForm(prev => ({ ...prev, vehicleName: newVehicle.vehicleName }));
-          }}
+        // onSave={(vehicleData) => {
+        //   const newVehicle = {
+        //     vehicleId: (vehicles.length + 1).toString(),
+        //     vehicleName: `${vehicleData.brand} ${vehicleData.model} ${vehicleData.variant || ''}`.trim()
+        //   };
+        //   setForm(prev => ({ ...prev, vehicleName: newVehicle.vehicleName }));
+        // }}
         />
       )}
 
@@ -422,10 +436,10 @@ useEffect(() => {
         <AddPersonnelModal
           type="Technician"
           onClose={() => setShowAddTechnicianModal(false)}
-          onSave={(personnelData) => {
-            const newTechnician: Personnel = { ...personnelData, id: (technicians.length + 1).toString() };
-            setForm(prev => ({ ...prev, technician: newTechnician.id }));
-          }}
+        // onSave={(personnelData) => {
+        //   const newTechnician: Personnel = { ...personnelData, id: (technicians.length + 1).toString() };
+        //   setForm(prev => ({ ...prev, technician: newTechnician.id }));
+        // }}
         />
       )}
 
@@ -433,10 +447,10 @@ useEffect(() => {
         <AddPersonnelModal
           type="Supervisor"
           onClose={() => setShowAddSupervisorModal(false)}
-          onSave={(personnelData) => {
-            const newSupervisor: Personnel = { ...personnelData, id: (supervisors.length + 1).toString() };
-            setForm(prev => ({ ...prev, supervisor: newSupervisor.id }));
-          }}
+        // onSave={(personnelData) => {
+        //   const newSupervisor: Personnel = { ...personnelData, id: (supervisors.length + 1).toString() };
+        //   setForm(prev => ({ ...prev, supervisor: newSupervisor.id }));
+        // }}
         />
       )}
     </div>
