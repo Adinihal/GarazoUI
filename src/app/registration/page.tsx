@@ -185,7 +185,8 @@ export default function CustomerRegistrationForm() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto p-6">
+    <div className="min-h-screen bg-[#ff00000a] pt-6 pb-12">
+      <div className="max-w-7xl mx-auto px-6">
       <RegistrationHeader />
       <form onSubmit={handleSubmit} className="bg-white rounded-lg p-6 shadow-[0_-4px_8px_-2px_rgba(0,0,0,0.20),0_4px_6px_-1px_rgba(0,0,0,0.06),0_2px_4px_-2px_rgba(0,0,0,0.08)]">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-2">
@@ -239,7 +240,7 @@ export default function CustomerRegistrationForm() {
               <button
                 type="button"
                 onClick={() => setShowAddVehicleModal(true)}
-                className="ml-2 mb-[4px] inline-flex items-center px-2 py-1 text-sm text-blue-600 hover:text-blue-800 transition-colors whitespace-nowrap"
+                className="ml-2 mb-[4px] inline-flex items-center px-2 py-1 text-sm text-red-600 hover:text-red-800 transition-colors whitespace-nowrap"
                 title="Add New Vehicle"
               >
                 <FaPlus className="mr-1" /> Add New
@@ -364,7 +365,7 @@ export default function CustomerRegistrationForm() {
               <button
                 type="button"
                 onClick={() => setShowAddTechnicianModal(true)}
-                className="ml-2 mb-[4px] inline-flex items-center px-2 py-1 text-sm text-blue-600 hover:text-blue-800 transition-colors whitespace-nowrap"
+                className="ml-2 mb-[4px] inline-flex items-center px-2 py-1 text-sm text-red-600 hover:text-red-800 transition-colors whitespace-nowrap"
               >
                 <FaPlus className="mr-1" /> Add New
               </button>
@@ -385,7 +386,7 @@ export default function CustomerRegistrationForm() {
               <button
                 type="button"
                 onClick={() => setShowAddSupervisorModal(true)}
-                className="ml-2 mb-[4px] inline-flex items-center px-2 py-1 text-sm text-blue-600 hover:text-blue-800 transition-colors whitespace-nowrap"
+                className="ml-2 mb-[4px] inline-flex items-center px-2 py-1 text-sm text-red-600 hover:text-red-800 transition-colors whitespace-nowrap"
               >
                 <FaPlus className="mr-1" /> Add New
               </button>
@@ -453,6 +454,7 @@ export default function CustomerRegistrationForm() {
         // }}
         />
       )}
+      </div>
     </div>
   );
 }

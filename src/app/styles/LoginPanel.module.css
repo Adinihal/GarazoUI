@@ -14,7 +14,7 @@
     height: 100vh;
     overflow: hidden;
     flex-direction: column;
-    background-color: #16cba7;
+    background-color: #dc2626;
   }
   
   /* Left Panel Styles */
@@ -98,7 +98,7 @@
   .submitButton {
     width: 100%;
     padding: 12px;
-    background-color: #16cba7;
+    background-color: #dc2626;
     color: white;
     border: none;
     border-radius: 5px;
@@ -110,7 +110,7 @@
   }
 
   .submitButton:hover {
-    background-color: #14b696;
+    background-color: #b91c1c;
   }
 
   .submitButton:disabled {
@@ -177,13 +177,13 @@
 
 .inputField:focus {
   outline: none;
-  border-color: #16cba7;
-  box-shadow: 0 0 0 2px rgba(22, 203, 167, 0.2);
+  border-color: #dc2626;
+  box-shadow: 0 0 0 2px rgba(220, 38, 38, 0.2);
 }
 
 .forgotLink {
   font-size: 0.875rem;
-  color: #16cba7;
+  color: #dc2626;
   text-decoration: none;
   align-self: flex-end;
   margin-top: -1rem;
@@ -297,7 +297,7 @@
     
     background-color: transparent;
     padding: 15px 25px 15px 25px;
-    border: 1px solid #16cba7;
+    border: 1px solid #dc2626;
     border-radius: 15px;
     color: #000;
     box-shadow: 0px 10px 13px -7px #909090, 5px 5px 15px 5px rgba(0, 0, 0, 0);

@@ -34,7 +34,7 @@ export default function JobcardEstimation() {
     if (loading) {
         return (
             <div className="min-h-screen flex items-center justify-center">
-                <div className="text-xl text-[#16CBA7]">Loading...</div>
+                <div className="text-xl text-[#dc2626]">Loading...</div>
             </div>
         );
     }

@@ -37,7 +37,7 @@ export default function CardHeader({vehicleDetails,location}:any) {
                 <span className="bg-gray-100 text-gray-700 px-2 py-[2px] text-xs rounded-sm font-semibold">
                     NA | {vehicleDetails.type}
                 </span>
-                <span className="bg-[#16cba7] text-white text-xs px-2 py-[2px] rounded-sm font-semibold">
+                <span className="bg-[#dc2626] text-white text-xs px-2 py-[2px] rounded-sm font-semibold">
                     NA
                 </span>
             </div>

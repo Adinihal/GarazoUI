@@ -102,13 +102,13 @@ const Header = () => {
             
           </div>
           {/* <FaHourglass className={styles.icon} /> */}
-          {/* <div className="group relative inline-flex items-center justify-center p-2 rounded-full transition-colors duration-200 hover:bg-[#16cba7]">
+          {/* <div className="group relative inline-flex items-center justify-center p-2 rounded-full transition-colors duration-200 hover:bg-[#dc2626]">
             <FaHourglass className="text-xl cursor-pointer" />
             <span className="absolute top-[140%] left-1/2 mt-2 -translate-x-1/2 whitespace-nowrap rounded-md bg-gray-800 px-2 py-1 text-xs text-white opacity-0 transition-opacity group-hover:opacity-100 after:absolute after:left-1/2 after:bottom-full after:-translate-x-1/2 after:border-4 after:border-transparent after:border-b-gray-800">
               Progress Bar
             </span>
           </div>
-          <div className="group relative inline-flex items-center justify-center p-2 rounded-full transition-colors duration-200 hover:bg-[#16cba7]">
+          <div className="group relative inline-flex items-center justify-center p-2 rounded-full transition-colors duration-200 hover:bg-[#dc2626]">
             <FaHourglass className="text-xl cursor-pointer" />
             <span className="absolute top-[140%] left-1/2 mt-2 -translate-x-1/2 whitespace-nowrap rounded-md bg-gray-800 px-2 py-1 text-xs text-white opacity-0 transition-opacity group-hover:opacity-100 after:absolute after:left-1/2 after:bottom-full after:-translate-x-1/2 after:border-4 after:border-transparent after:border-b-gray-800">
               Subscription Details
