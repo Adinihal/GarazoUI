@@ -10,8 +10,10 @@ export const pool = mysql.createPool({
   connectionLimit: 10,
   queueLimit: 0,
   enableKeepAlive: true,
-  keepAliveInitialDelayMs: 0,
-  ssl: true, // Required for Azure MySQL
+  keepAliveInitialDelay: 0,
+  ssl: {
+    rejectUnauthorized: false,
+  }, // Required for Azure MySQL
 });
 
 
