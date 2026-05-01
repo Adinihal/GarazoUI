@@ -1,7 +1,7 @@
 
 import { useRouter } from 'next/navigation';
 import { useDispatch } from 'react-redux';
-import { showToast } from '../../../reduxStore/appSlice';
+import { showToast, setCurrentJobCard } from '../../../reduxStore/appSlice';
 import {
     FaFileInvoice,
     FaSyncAlt,
@@ -14,30 +14,31 @@ import CustomerDetails from "./CustomerDetails";
 import Repair from "./Repair"
 import { vehicleService } from '../../../services/vehicleService';
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export default function JobCard({service}:any) {
- // eslint-disable-next-line no-console
- console.log("JobCard Service Data:", service);
- const {customer,serviceDetails}=service;
- const router = useRouter();
- const dispatch = useDispatch();
+export default function JobCard({ service }: any) {
+    // eslint-disable-next-line no-console
+    console.log("JobCard Service Data:", service);
+    const { customer, serviceDetails } = service;
+    const router = useRouter();
+    const dispatch = useDispatch();
 
- const handleJCEstClick = () => {
-   router.push(`/jobcard-estimation?jcNo=${serviceDetails.jcNo}`);
- };
+    const handleJCEstClick = () => {
+        dispatch(setCurrentJobCard(service));
+        router.push(`/jobcard-estimation?jcNo=${serviceDetails.jcNo}`);
+    };
 
- const handleDelete = async () => {
-   if (confirm('Are you sure you want to delete this job card?')) {
-     try {
-       await vehicleService.deleteJobCard(serviceDetails.jcNo);
-       dispatch(showToast({ message: 'Job card deleted successfully', type: 'success' }));
-       // Optionally refresh the page or update the state
-       window.location.reload();
-     } catch (error) {
-       console.error('Error deleting job card:', error);
-       dispatch(showToast({ message: 'Failed to delete job card', type: 'error' }));
-     }
-   }
- };
+    const handleDelete = async () => {
+        if (confirm('Are you sure you want to delete this job card?')) {
+            try {
+                await vehicleService.deleteJobCard(serviceDetails.jcNo);
+                dispatch(showToast({ message: 'Job card deleted successfully', type: 'success' }));
+                // Optionally refresh the page or update the state
+                window.location.reload();
+            } catch (error) {
+                console.error('Error deleting job card:', error);
+                dispatch(showToast({ message: 'Failed to delete job card', type: 'error' }));
+            }
+        }
+    };
 
     return (
         <div className="w-full flex flex-col my-[40px]" key={service.id}>
@@ -61,11 +62,11 @@ export default function JobCard({service}:any) {
                         <div className="flex items-center gap-5 mt-6 sm:mt-0 flex-wrap justify-evenly sm:justify-end">
                             {[
                                 { icon: <FaFileAlt className="text-[#16cba7]" />, label: "JC/Est", onClick: handleJCEstClick },
-                                { icon: <FaFileAlt className="text-red-400" />, label: "Status", onClick: () => {} },
-                                { icon: <FaSyncAlt className="text-gray-500" />, label: "History", onClick: () => {} },
-                                { icon: <FaFileAlt className="text-gray-500" />, label: "Payments", onClick: () => {} },
-                                { icon: <FaPercent className="text-gray-500" />, label: "Discount", onClick: () => {} },
-                                { icon: <FaFileInvoice className="text-red-400" />, label: "Invoice", onClick: () => {} },
+                                { icon: <FaFileAlt className="text-red-400" />, label: "Status", onClick: () => { } },
+                                { icon: <FaSyncAlt className="text-gray-500" />, label: "History", onClick: () => { } },
+                                { icon: <FaFileAlt className="text-gray-500" />, label: "Payments", onClick: () => { } },
+                                { icon: <FaPercent className="text-gray-500" />, label: "Discount", onClick: () => { } },
+                                { icon: <FaFileInvoice className="text-red-400" />, label: "Invoice", onClick: () => { } },
                                 { icon: <FaTrashAlt className="text-red-500" />, label: "Delete", onClick: handleDelete },
                             ].map((item, i) => (
                                 <div
@@ -101,7 +102,7 @@ export default function JobCard({service}:any) {
             </div>
             <div className="bg-white border border-[#E6E6E6] rounded-[15px] shadow-[0_1px_7px_1px_rgba(0,0,0,0.1)] w-full p-3 md:p-[6px] md:flex md:flex-nowrap md:items-center md:justify-between">
 
-                
+
                 <div className="flex justify-between items-center mb-3 md:mb-0 md:flex md:items-center md:border-r md:border-[#dfdfdf] md:pr-4 md:min-w-[180px] lg:min-w-[200px]">
                     <div className="bg-[#16CBA7] text-white text-center px-4 py-2 rounded-[12px] min-w-[120px] md:min-w-[100px] md:py-2 md:mr-2">
                         <span className="text-[13px] block font-medium md:text-[13px]">JC.No:</span>
@@ -114,13 +115,13 @@ export default function JobCard({service}:any) {
                     </div>
                 </div>
                 <div className="mb-4 md:mb-0 md:flex md:items-center md:border-r md:border-[#dfdfdf] md:px-4 md:flex-1">
-                    
+
                     <div className="bg-black text-white rounded-md mb-3 md:mb-0 md:rounded-[5px] md:w-5 md:h-[42px] md:flex md:items-center md:justify-center md:mr-3">
                         <span className="text-[12px] font-semibold uppercase tracking-wide text-center py-2 block md:text-[10px] md:rotate-[-90deg] md:relative md:top-[1px]">
                             Repair
                         </span>
                     </div>
-                    <Repair serviceDetails={serviceDetails}/>
+                    <Repair serviceDetails={serviceDetails} />
                     {/* <div className="grid grid-cols-3 gap-3 text-center md:flex md:flex-1 md:justify-around md:gap-0">
                         <div className="md:min-w-[80px] lg:min-w-[90px]">
                             <span className="text-[14px] font-semibold text-[#16CBA7] block">NA</span>
@@ -145,7 +146,7 @@ export default function JobCard({service}:any) {
                     </div> */}
                 </div>
                 <div className="mb-4 md:mb-0 md:flex md:items-center md:border-r md:border-[#dfdfdf] md:px-4 md:flex-1">
-                    
+
                     <div className="bg-black text-white rounded-md mb-3 md:mb-0 md:rounded-[5px] md:w-5 md:h-[42px] md:flex md:items-center md:justify-center md:mr-3">
                         <span className="text-[12px] font-semibold uppercase tracking-wide text-center py-2 block md:text-[10px] md:rotate-[-90deg] md:relative md:top-[1px]">
                             Claims

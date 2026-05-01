@@ -6,6 +6,7 @@ const appSlice = createSlice({
         isLoader: false,
         loaderMessage: "Loading, please wait...",
         toast: null, // { message: string, type: 'success' | 'error' }
+        currentJobCard: null,
     },
     reducers: {
         showLoader(state, action) {
@@ -21,9 +22,12 @@ const appSlice = createSlice({
         },
         hideToast(state) {
             state.toast = null;
+        },
+        setCurrentJobCard(state, action) {
+            state.currentJobCard = action.payload;
         }
     }
 });
 
-export const { showLoader, hideLoader, showToast, hideToast } = appSlice.actions;
+export const { showLoader, hideLoader, showToast, hideToast, setCurrentJobCard } = appSlice.actions;
 export default appSlice.reducer;

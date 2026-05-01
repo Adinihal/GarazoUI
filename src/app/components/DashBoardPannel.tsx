@@ -6,7 +6,7 @@ import StatusCard from './StatusCard';
 import MenuBar from './common/MenuBar';
 import ServiceDetailsModal from './ServiceDetailsModal';
 import { fetchVehicleList, fetchVehicleCategories, fetchCustomerSources, fetchMechanicList } from '../reduxStore/dashboardSlice';
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import JobCard from './ui/Jobcard/JobCard';
 import { VehicleCatalog } from '../types/vehicle';
 import { vehicleService } from '../services/vehicleService';
@@ -90,109 +90,17 @@ export default function Home() {
   // Use a ref to track if the component is mounted
   const isMounted = React.useRef(false);
 
+  const globalDashboardData = useSelector((state: any) => state.dashboard.dashboardData);
+
   useEffect(() => {
     isMounted.current = true;
-    if (isMounted.current) {
-      axios.get(`${BASE_URL}/Dashboard`)
-        .then(response => {
-          if (isMounted.current) {
-            // Transform API response to ServiceData structure
-            const apiData = response.data;
-            // Map jobStatus to dashboard status counts
-            const statusMap = {
-              'Under Service': 'underServicing',
-              'Next Day Delivery': 'nextDayDelivery',
-              'Upcoming': 'upcomingDelivery',
-              'Ready': 'readyForDelivery',
-              'Payment': 'paymentProcessing',
-              'Completed': 'completedService',
-              'Open': 'underServicing',
-              'In Progress': 'underServicing',
-            };
-            const statusCounts = {
-              underServicing: 0,
-              nextDayDelivery: 0,
-              upcomingDelivery: 0,
-              readyForDelivery: 0,
-              paymentProcessing: 0,
-              completedService: 0,
-            };
-            // Count statuses
-            apiData.forEach((item: Record<string, unknown>) => {
-              const mapped = statusMap[(item.jobStatus as keyof typeof statusMap)] || 'underServicing';
-              if (statusCounts[mapped as keyof typeof statusCounts] !== undefined) statusCounts[mapped as keyof typeof statusCounts]++;
-            });
-            // Map API data to Service[]
-            const services = apiData.map((item: Record<string, unknown>) => ({
-              id: String(item.jobCardNo),
-              status: item.jobStatus,
-              vehicle: {
-                model: (item.vehicleName || '') as string,
-                regNo: (item.vehicleRegNo || '') as string,
-                type: (item.vehicleCategory || '') as string,
-                kms: (item.kmDriven || 0) as number,
-              },
-              location: (item.customerAddress || '') as string,
-              customer: {
-                name: (item.customerName || '') as string,
-                phone: (item.phoneNumber || '') as string,
-                email: (item.customerEmail || '') as string,
-                rating: 0,
-                advisor: (item.sourceContactPerson || '') as string,
-                source: (item.customerSource || '') as string,
-                address: (item.customerAddress || '') as string,
-              },
-              serviceDetails: {
-                jcNo: String(item.jobCardNo),
-                estimate: (item.invoiceTotal || 0) as number,
-                invoiceNo: item.invoiceId ? String(item.invoiceId) : '',
-                paid: (item.netAmount || 0) as number,
-                due: ((item.invoiceTotal || 0) as number) - ((item.netAmount || 0) as number),
-                type: (item.vehicleCategory || '') as string,
-                doa: (item.dateOfArrival || '') as string,
-                dod: (item.dateOfDelivery || '') as string,
-                progress: 0,
-                assignedTechnician: [item.technicianFirstName, item.technicianLastName].filter(Boolean).join(' '),
-                supervisor: [item.supervisorFirstName, item.supervisorLastName].filter(Boolean).join(' '),
-              },
-            }));
-            setData({ services, statusCounts });
-          }
-        })
-        .catch(err => console.error(err));
+    if (isMounted.current && globalDashboardData) {
+      setData(globalDashboardData);
     }
     return () => {
       isMounted.current = false;
     };
-  }, []);
-
-  useEffect(() => {
-    axios.get('/assets/service-data.json')
-      .then(response => setData(response.data))
-      .catch(err => console.error(err));
-  }, []);
-
-  useEffect(() => {
-    const loadData = async () => {
-      try {
-        const [vehicleCatalog, vehicleCategories, customerSources, mechanics] = await Promise.all([
-          vehicleService.fetchVehicleCatalog(),
-          vehicleService.fetchVehicleCategories(),
-          vehicleService.fetchCustomerSources(),
-          vehicleService.fetchMechanics()
-        ]);
-
-        dispatch(fetchVehicleList(vehicleCatalog));
-        dispatch(fetchVehicleCategories(vehicleCategories));
-        dispatch(fetchCustomerSources(customerSources));
-        dispatch(fetchMechanicList(mechanics));
-      } catch (err) {
-        console.error('Error loading data:', err);
-      }
-    };
-
-    loadData();
-  }, [dispatch]);
+  }, [globalDashboardData]);
 
   // Helper function to format dates consistently
   const formatDate = (dateStr: string) => {
@@ -236,7 +144,7 @@ export default function Home() {
     return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
   }
 
-{console.log("filtered", filteredServices)}
+  { console.log("filtered", filteredServices) }
   return (
     <>
       <div className={styles.container}>
@@ -265,8 +173,8 @@ export default function Home() {
           </div>
         </div>
 
-  
-        
+
+
         {showServiceModal && (
           <ServiceDetailsModal
             services={filteredServices}

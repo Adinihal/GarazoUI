@@ -28,10 +28,53 @@ export default function ClientProvider({ children }: ClientProviderProps) {
 
   return (
     <ReduxProvider>
+      <GlobalDataLoader showHeader={showHeader} />
       <Loader />
       <Toast />
       {showHeader && <Header />}
       {children}
     </ReduxProvider>
   );
+}
+
+import { useDispatch } from 'react-redux';
+import { 
+  fetchDashboardData, 
+  fetchVehicleList, 
+  fetchVehicleCategories, 
+  fetchCustomerSources, 
+  fetchMechanicList 
+} from '../reduxStore/dashboardSlice';
+import { vehicleService } from '../services/vehicleService';
+
+function GlobalDataLoader({ showHeader }: { showHeader: boolean }) {
+  const dispatch = useDispatch<any>();
+
+  useEffect(() => {
+    if (showHeader) {
+      dispatch(fetchDashboardData());
+      
+      const loadMasterData = async () => {
+        try {
+          const [vehicleCatalog, vehicleCategories, customerSources, mechanics] = await Promise.all([
+            vehicleService.fetchVehicleCatalog(),
+            vehicleService.fetchVehicleCategories(),
+            vehicleService.fetchCustomerSources(),
+            vehicleService.fetchMechanics()
+          ]);
+
+          dispatch(fetchVehicleList(vehicleCatalog));
+          dispatch(fetchVehicleCategories(vehicleCategories));
+          dispatch(fetchCustomerSources(customerSources));
+          dispatch(fetchMechanicList(mechanics));
+        } catch (err) {
+          console.error('Error loading master data:', err);
+        }
+      };
+
+      loadMasterData();
+    }
+  }, [showHeader, dispatch]);
+
+  return null;
 }
