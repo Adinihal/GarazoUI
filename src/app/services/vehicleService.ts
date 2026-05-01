@@ -101,5 +101,20 @@ export const vehicleService = {
       console.error(`Error creating ${type}:`, error);
       throw error;
     }
+  },
+
+  /**
+   * Deletes a job card by JC number
+   * @param jcNo The job card number to delete
+   * @returns Promise<any>
+   */
+  deleteJobCard: async (jcNo: string): Promise<any> => {
+    try {
+      const response = await axios.delete(`${API_BASE_URL}/Dashboard/jobcard/${jcNo}`);
+      return response.data;
+    } catch (error) {
+      console.error('Error deleting job card:', error);
+      throw error;
+    }
   }
 };

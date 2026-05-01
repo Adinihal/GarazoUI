@@ -1,16 +1,43 @@
 
+import { useRouter } from 'next/navigation';
+import { useDispatch } from 'react-redux';
+import { showToast } from '../../../reduxStore/appSlice';
 import {
     FaFileInvoice,
     FaSyncAlt,
     FaPercent,
     FaFileAlt,
+    FaTrashAlt,
 } from "react-icons/fa";
 import CardHeader from './CardHeader';
 import CustomerDetails from "./CustomerDetails";
 import Repair from "./Repair"
+import { vehicleService } from '../../../services/vehicleService';
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default function JobCard({service}:any) {
+ // eslint-disable-next-line no-console
+ console.log("JobCard Service Data:", service);
  const {customer,serviceDetails}=service;
+ const router = useRouter();
+ const dispatch = useDispatch();
+
+ const handleJCEstClick = () => {
+   router.push(`/jobcard-estimation?jcNo=${serviceDetails.jcNo}`);
+ };
+
+ const handleDelete = async () => {
+   if (confirm('Are you sure you want to delete this job card?')) {
+     try {
+       await vehicleService.deleteJobCard(serviceDetails.jcNo);
+       dispatch(showToast({ message: 'Job card deleted successfully', type: 'success' }));
+       // Optionally refresh the page or update the state
+       window.location.reload();
+     } catch (error) {
+       console.error('Error deleting job card:', error);
+       dispatch(showToast({ message: 'Failed to delete job card', type: 'error' }));
+     }
+   }
+ };
 
     return (
         <div className="w-full flex flex-col my-[40px]" key={service.id}>
@@ -33,18 +60,20 @@ export default function JobCard({service}:any) {
                         </div>
                         <div className="flex items-center gap-5 mt-6 sm:mt-0 flex-wrap justify-evenly sm:justify-end">
                             {[
-                                { icon: <FaFileAlt className="text-[#16cba7]" />, label: "JC/Est" },
-                                { icon: <FaFileAlt className="text-red-400" />, label: "Status" },
-                                { icon: <FaSyncAlt className="text-gray-500" />, label: "History" },
-                                { icon: <FaFileAlt className="text-gray-500" />, label: "Payments" },
-                                { icon: <FaPercent className="text-gray-500" />, label: "Discount" },
-                                { icon: <FaFileInvoice className="text-red-400" />, label: "Invoice" },
+                                { icon: <FaFileAlt className="text-[#16cba7]" />, label: "JC/Est", onClick: handleJCEstClick },
+                                { icon: <FaFileAlt className="text-red-400" />, label: "Status", onClick: () => {} },
+                                { icon: <FaSyncAlt className="text-gray-500" />, label: "History", onClick: () => {} },
+                                { icon: <FaFileAlt className="text-gray-500" />, label: "Payments", onClick: () => {} },
+                                { icon: <FaPercent className="text-gray-500" />, label: "Discount", onClick: () => {} },
+                                { icon: <FaFileInvoice className="text-red-400" />, label: "Invoice", onClick: () => {} },
+                                { icon: <FaTrashAlt className="text-red-500" />, label: "Delete", onClick: handleDelete },
                             ].map((item, i) => (
                                 <div
                                     key={i}
-                                    className="flex flex-col items-center cursor-pointer hover:text-[#16cba7] transition-colors"
+                                    onClick={item.onClick}
+                                    className="flex flex-col items-center cursor-pointer hover:text-red-400 transition-colors"
                                 >
-                                    <div className="w-12 h-12 border border-gray-300 rounded-full flex items-center justify-center hover:border-[#16cba7] transition-colors">
+                                    <div className="w-12 h-12 border border-gray-300 rounded-full flex items-center justify-center hover:border-red-400 transition-colors">
                                         {item.icon}
                                     </div>
                                     <span className="text-xs font-semibold mt-1">{item.label}</span>

@@ -236,7 +236,7 @@ export default function Home() {
     return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
   }
 
-
+{console.log("filtered", filteredServices)}
   return (
     <>
       <div className={styles.container}>
@@ -265,7 +265,8 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Service Details Modal */}
+  
+        
         {showServiceModal && (
           <ServiceDetailsModal
             services={filteredServices}
