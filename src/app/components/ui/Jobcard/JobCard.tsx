@@ -27,7 +27,7 @@ export default function JobCard({service}:any) {
                                 <CustomerDetails title={"Phone Number"} name={customer.phone} />
                                 <CustomerDetails title={"Customer Source"} name={customer.source} />
                                 <CustomerDetails title={"Customer Rating"} name={customer.rating} />
-                                <CustomerDetails title={"Advisor Name"} name={customer.advisor} />
+                                <CustomerDetails title={"Supervisor Name"} name={serviceDetails.supervisor} />
 
                             </div>
                         </div>
